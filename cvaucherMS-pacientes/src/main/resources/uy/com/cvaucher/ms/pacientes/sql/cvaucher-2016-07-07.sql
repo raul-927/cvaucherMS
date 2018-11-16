@@ -1,0 +1,1735 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         5.6.17 - MySQL Community Server (GPL)
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             8.3.0.4694
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- Volcando estructura de base de datos para est_vaucher
+DROP DATABASE IF EXISTS `est_vaucher`;
+CREATE DATABASE IF NOT EXISTS `est_vaucher` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `est_vaucher`;
+
+
+-- Volcando estructura para tabla est_vaucher.acl_class
+DROP TABLE IF EXISTS `acl_class`;
+CREATE TABLE IF NOT EXISTS `acl_class` (
+  `id` bigint(20) NOT NULL,
+  `class` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.acl_class: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `acl_class` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acl_class` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.acl_entry
+DROP TABLE IF EXISTS `acl_entry`;
+CREATE TABLE IF NOT EXISTS `acl_entry` (
+  `id` bigint(20) NOT NULL,
+  `acl_object_identity` bigint(20) NOT NULL,
+  `ace_order` int(11) NOT NULL,
+  `sid` bigint(20) NOT NULL,
+  `mask` int(11) NOT NULL,
+  `granting` int(11) NOT NULL,
+  `audit_success` int(11) NOT NULL,
+  `audit_failure` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `acl_object_identity_ace_order` (`acl_object_identity`,`ace_order`),
+  KEY `foreign_fk_5` (`sid`),
+  CONSTRAINT `foreign_fk_4` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`),
+  CONSTRAINT `foreign_fk_5` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.acl_entry: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `acl_entry` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acl_entry` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.acl_object_identity
+DROP TABLE IF EXISTS `acl_object_identity`;
+CREATE TABLE IF NOT EXISTS `acl_object_identity` (
+  `id` bigint(20) NOT NULL,
+  `object_id_class` bigint(20) NOT NULL,
+  `object_id_identity` bigint(20) NOT NULL,
+  `parent_object` bigint(20) NOT NULL,
+  `owner_sid` bigint(20) NOT NULL,
+  `entries_inheriting` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `object_id_class_object_id_identity` (`object_id_class`,`object_id_identity`),
+  KEY `foreign_fk_1` (`parent_object`),
+  KEY `foreign_fk_3` (`owner_sid`),
+  CONSTRAINT `foreign_fk_1` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`),
+  CONSTRAINT `foreign_fk_2` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
+  CONSTRAINT `foreign_fk_3` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.acl_object_identity: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `acl_object_identity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acl_object_identity` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.acl_sid
+DROP TABLE IF EXISTS `acl_sid`;
+CREATE TABLE IF NOT EXISTS `acl_sid` (
+  `id` bigint(20) NOT NULL,
+  `principal` int(11) NOT NULL,
+  `sid` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `principal_sid` (`principal`,`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.acl_sid: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `acl_sid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acl_sid` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.agenda
+DROP TABLE IF EXISTS `agenda`;
+CREATE TABLE IF NOT EXISTS `agenda` (
+  `ag_pac_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ag_tipo` varchar(50) NOT NULL,
+  `ag_dato` varchar(50) NOT NULL,
+  `pac_cedula` int(11) NOT NULL,
+  PRIMARY KEY (`ag_pac_Id`),
+  KEY `pacientes_agenda` (`pac_cedula`),
+  CONSTRAINT `pacientes_agenda` FOREIGN KEY (`pac_cedula`) REFERENCES `pacientes` (`cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=297 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.agenda: ~128 rows (aproximadamente)
+/*!40000 ALTER TABLE `agenda` DISABLE KEYS */;
+REPLACE INTO `agenda` (`ag_pac_Id`, `ag_tipo`, `ag_dato`, `pac_cedula`) VALUES
+	(8, 'CELULAR', '091020020', 44188684),
+	(9, 'EMAIL', 'info@vaucher.com.uy', 44188684),
+	(10, 'TELEFONO', '24875544', 44188684),
+	(11, 'CELULAR', '094225478', 44247486),
+	(16, 'CELULAR', '095123456', 24578956),
+	(17, 'TELEFONO', '26010171', 42542474),
+	(18, 'EMAIL', 'cgomez@hotmail.com', 14578958),
+	(19, 'CELULAR', '098447775', 14578958),
+	(20, 'TELEFONO', '26104578', 24577742),
+	(21, 'CELULAR', '099587451', 24577742),
+	(22, 'EMAIL', 'drodriguez@gmail.com', 24577742),
+	(23, 'TELEFONO', '26104050', 44588795),
+	(45, 'CELULAR', '098585494', 19455549),
+	(46, 'TELEFONO', '24875544', 19455549),
+	(47, 'EMAIL', 'raulhern927@gmail.com', 19455549),
+	(48, 'CELULAR', '096547897', 45698741),
+	(49, 'TELEFONO', '24086827', 10042763),
+	(50, 'TELEFONO', '24578987', 12456637),
+	(51, 'CELULAR', '095478987', 12456637),
+	(52, 'CELULAR', '099874547', 35465475),
+	(53, 'TELEFONO', '24578987', 35465475),
+	(54, 'EMAIL', 'lbermudez@gmail.com', 35465475),
+	(55, 'CELULAR', '095700192', 42629707),
+	(56, 'CELULAR', '094514789', 54145782),
+	(57, 'TELEFONO', '26125478', 54145782),
+	(58, 'EMAIL', 'eli.introino@gmail.com', 54145782),
+	(129, 'CELULAR', '0965478789', 24567896),
+	(130, 'TELEFONO', '29085454', 24567896),
+	(131, 'EMAIL', 'natalia.mederos@gmail.com', 24567896),
+	(132, 'CELULAR', '094578795', 24157481),
+	(133, 'CELULAR', '098547895', 45789653),
+	(134, 'TELEFONO', '24087985', 45789653),
+	(135, 'CELULAR', '087485954', 45156898),
+	(136, 'CELULAR', '094582145', 25890747),
+	(145, 'CELULAR', '0965478789', 32145771),
+	(146, 'CELULAR', '094547895', 23364786),
+	(147, 'CELULAR', '098474545', 32124561),
+	(148, 'CELULAR', '095478956', 41547843),
+	(149, 'EMAIL', 'fernanda.martinez@mail.com', 41547843),
+	(150, 'CELULAR', '095265147', 65453215),
+	(151, 'CELULAR', '094124563', 54324322),
+	(207, 'CELULAR', '09845454545', 29584732),
+	(208, 'TELEFONO', '25478954', 29584732),
+	(209, 'EMAIL', 'ale.gomez@algundominio.com', 29584732),
+	(210, 'SKYPE', 'ale gomez', 29584732),
+	(211, 'CELULAR', '098457895', 31245675),
+	(212, 'TELEFONO', '45178965', 31245675),
+	(213, 'EMAIL', 'Carolina.Martinez@undominio.com', 31245675),
+	(214, 'FACEBOOK', 'Carolina.Martinez@facebook.com', 31245675),
+	(215, 'CELULAR', '09845454545', 41578943),
+	(216, 'TELEFONO', '29100210', 41578943),
+	(217, 'EMAIL', 'marianela.fernandez@undominio.com', 41578943),
+	(218, 'FACEBOOK', 'marianela fernandez', 41578943),
+	(219, 'CELULAR', '09845454545', 62135218),
+	(220, 'TELEFONO', '29100210', 62135218),
+	(221, 'EMAIL', 'carolina.benitez@algundominio.com', 62135218),
+	(222, 'FACEBOOK', 'carolina.benitez', 62135218),
+	(223, 'CELULAR', '098745632', 51234568),
+	(224, 'CELULAR', '098454789', 31245697),
+	(225, 'TELEFONO', '24578965', 31245697),
+	(226, 'EMAIL', 'analia.rubio@undominio.com', 31245697),
+	(227, 'CELULAR', '094285111', 45213216),
+	(228, 'TELEFONO', '24815151', 45213216),
+	(229, 'EMAIL', 'maria.perez@gmail.com', 45213216),
+	(230, 'CELULAR', '094145421', 41214153),
+	(231, 'CELULAR', '099452145', 54152636),
+	(232, 'TELEFONO', '24789854', 54152636),
+	(233, 'CELULAR', '091214563', 29144124),
+	(234, 'TELEFONO', '24874563', 29144124),
+	(235, 'EMAIL', 'patricia.soca@undominio.com', 29144124),
+	(236, 'CELULAR', '094123546', 42154126),
+	(237, 'CELULAR', '098478456', 61234566),
+	(238, 'CELULAR', '098585633', 41021326),
+	(239, 'CELULAR', '096541230', 32145618),
+	(240, 'CELULAR', '096214587', 12034566),
+	(241, 'CELULAR', '095414526', 12542339),
+	(242, 'CELULAR', '099214536', 25413634),
+	(243, 'CELULAR', '096541257', 32145226),
+	(244, 'CELULAR', '0995874778', 15478418),
+	(245, 'CELULAR', '094547441', 14547886),
+	(246, 'CELULAR', '094547441', 31244455),
+	(247, 'CELULAR', '094547441', 23413632),
+	(248, 'CELULAR', '096321123', 19345033),
+	(249, 'TELEFONO', '24085478', 19345033),
+	(250, 'CELULAR', '098547854', 25457892),
+	(251, 'TELEFONO', '26102365', 25457892),
+	(252, 'EMAIL', 'virginia.paez@dominio.com', 25457892),
+	(253, 'CELULAR', '092321456', 24578912),
+	(254, 'TELEFONO', '26145216', 24578912),
+	(255, 'EMAIL', 'ana.pereira@dominio.com', 24578912),
+	(256, 'CELULAR', '094120369', 32145624),
+	(257, 'CELULAR', '098747521', 45632153),
+	(258, 'CELULAR', '974512693', 47894519),
+	(259, 'TELEFONO', '24789652', 47894519),
+	(260, 'EMAIL', 'juana.martinez@gmail.com', 47894519),
+	(261, 'CELULAR', '985492473', 19347188),
+	(262, 'CELULAR', '976164510', 34121141),
+	(263, 'CELULAR', '098741231', 14789454),
+	(264, 'CELULAR', '098475124', 54124566),
+	(265, 'TELEFONO', '26010171', 24512465),
+	(266, 'CELULAR', '098741231', 45267483),
+	(267, 'CELULAR', '098741231', 24158792),
+	(268, 'CELULAR', '098741231', 15849853),
+	(269, 'CELULAR', '099541252', 41254569),
+	(270, 'CELULAR', '098457410', 21453325),
+	(271, 'CELULAR', '095412002', 14788745),
+	(272, 'CELULAR', '099541201', 31022037),
+	(273, 'CELULAR', '096541203', 31021237),
+	(274, 'CELULAR', '094541201', 54120128),
+	(275, 'CELULAR', '096521332', 14512031),
+	(276, 'CELULAR', '098741231', 35241021),
+	(277, 'CELULAR', '014578954', 41023982),
+	(278, 'CELULAR', '021457895', 14152637),
+	(279, 'CELULAR', '098741231', 63210102),
+	(280, 'CELULAR', '098741231', 25647893),
+	(281, 'CELULAR', '097485632', 41245786),
+	(283, 'CELULAR', '014578954', 35639636),
+	(284, 'CELULAR', '085741245', 14528953),
+	(285, 'CELULAR', '098741231', 41547893),
+	(286, 'CELULAR', '096521451', 42011233),
+	(287, 'CELULAR', '095478123', 15421528),
+	(288, 'CELULAR', '098741524', 5412474),
+	(289, 'EMAIL', 'rfirpo@domain.com', 5412474),
+	(290, 'CELULAR', '976547895', 4512635),
+	(291, 'CELULAR', '098455662', 45124108),
+	(292, 'TELEFONO', '24056578', 45124108),
+	(293, 'EMAIL', 'florencia.vaucher@domail.com', 45124108),
+	(294, 'CELULAR', '085478965', 47896636),
+	(295, 'CELULAR', '094514542', 45154787),
+	(296, 'TELEFONO', '24085412', 45154787);
+/*!40000 ALTER TABLE `agenda` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.asiento_contable
+DROP TABLE IF EXISTS `asiento_contable`;
+CREATE TABLE IF NOT EXISTS `asiento_contable` (
+  `as_con_id` int(11) NOT NULL AUTO_INCREMENT,
+  `as_con_caja_id` int(11) NOT NULL DEFAULT '0',
+  `as_con_nro` int(11) NOT NULL DEFAULT '0',
+  `as_cuenta_debe` int(11) DEFAULT NULL,
+  `as_cuenta_debeMonto` decimal(10,0) DEFAULT '0',
+  `as_cuenta_haber` int(11) DEFAULT NULL,
+  `as_cuenta_haberMonto` decimal(10,0) DEFAULT '0',
+  `as_cuenta_tipo` int(11) DEFAULT '0',
+  `as_con_descripcion` varchar(150) DEFAULT '0',
+  `as_con_fecha` date DEFAULT NULL,
+  `as_con_hora` time DEFAULT NULL,
+  `as_con_usr` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`as_con_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.asiento_contable: ~79 rows (aproximadamente)
+/*!40000 ALTER TABLE `asiento_contable` DISABLE KEYS */;
+REPLACE INTO `asiento_contable` (`as_con_id`, `as_con_caja_id`, `as_con_nro`, `as_cuenta_debe`, `as_cuenta_debeMonto`, `as_cuenta_haber`, `as_cuenta_haberMonto`, `as_cuenta_tipo`, `as_con_descripcion`, `as_con_fecha`, `as_con_hora`, `as_con_usr`) VALUES
+	(44, 107, 1, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(45, 107, 1, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(46, 107, 1, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(47, 107, 2, 1, 12500, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(48, 107, 2, 9, 0, 9, 2750, 2, 'IVA 22%', NULL, NULL, NULL),
+	(49, 107, 2, 12, 0, 12, 9750, 3, '20 Sesiones de Masaje Descontracturante', NULL, NULL, NULL),
+	(52, 107, 3, 1, 3500, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(53, 107, 3, 9, 0, 9, 770, 2, 'IVA 22%', NULL, NULL, NULL),
+	(54, 107, 3, 12, 0, 12, 2730, 3, '5 Sesiones de Drenaje Linfatico, 5 Sesiones de Masaje de Piernas, 5 Sesiones de Ultrasonido', NULL, NULL, NULL),
+	(55, 107, 4, 1, 8700, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(56, 107, 4, 9, 0, 9, 1914, 2, 'IVA 22%', NULL, NULL, NULL),
+	(57, 107, 4, 12, 0, 12, 5916, 3, '5 Sesiones de Ultracavitacion y 5 Sesiones de Presoterapia', NULL, NULL, NULL),
+	(58, 107, 4, 1, 0, 1, 870, 1, 'Descuento 10%', NULL, NULL, NULL),
+	(59, 107, 5, 1, 2600, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(60, 107, 5, 9, 0, 9, 572, 2, 'IVA 22%', NULL, NULL, NULL),
+	(61, 107, 5, 12, 0, 12, 2028, 3, '8 Sesiones de Peeling', NULL, NULL, NULL),
+	(62, 107, 6, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(63, 107, 6, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(64, 107, 6, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(67, 107, 7, 1, 13500, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(68, 107, 7, 9, 0, 9, 2970, 2, 'IVA 22%', NULL, NULL, NULL),
+	(69, 107, 7, 12, 0, 12, 10530, 3, '6 Sesiones Ultracavitacion, 8 Sesiones Plissage, 2 Sesiones de Presoterapia, 4 Sesiones de Electrodos', NULL, NULL, NULL),
+	(70, 107, 8, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(71, 107, 8, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(72, 107, 8, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(73, 107, 9, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(74, 107, 9, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(75, 107, 9, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(76, 107, 10, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(77, 107, 10, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(78, 107, 10, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(79, 107, 11, 1, 8250, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(80, 107, 11, 9, 0, 9, 1815, 2, 'IVA 22%', NULL, NULL, NULL),
+	(81, 107, 11, 12, 0, 12, 6435, 3, '10 Sesiones de Ultracavitacion', NULL, NULL, NULL),
+	(82, 107, 12, 2, 850, 2, 0, 1, 'OCA', NULL, NULL, NULL),
+	(83, 107, 12, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(84, 107, 12, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(85, 107, 13, 3, 4000, 3, 0, 1, 'VISA', NULL, NULL, NULL),
+	(86, 107, 13, 9, 0, 9, 880, 2, 'IVA 22%', NULL, NULL, NULL),
+	(87, 107, 13, 12, 0, 12, 3120, 3, '15 Sesiones de 15 minutos Ultrasonido', NULL, NULL, NULL),
+	(88, 107, 14, 4, 4500, 4, 0, 1, 'MASTER', NULL, NULL, NULL),
+	(89, 107, 14, 9, 0, 9, 990, 2, 'IVA 22%', NULL, NULL, NULL),
+	(90, 107, 14, 12, 0, 12, 3510, 3, '8 sesiones de masaje muslos', NULL, NULL, NULL),
+	(91, 107, 15, 1, 850, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(92, 107, 15, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(93, 107, 15, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(94, 107, 16, 1, 4500, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(95, 107, 16, 9, 0, 9, 990, 2, 'IVA 22%', NULL, NULL, NULL),
+	(96, 107, 16, 12, 0, 12, 3510, 3, '8 sesiones de masaje muslos', NULL, NULL, NULL),
+	(97, 107, 17, 2, 850, 2, 0, 1, 'OCA', NULL, NULL, NULL),
+	(98, 107, 17, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(99, 107, 17, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(100, 107, 18, 5, 4200, 5, 0, 1, 'DINERS', NULL, NULL, NULL),
+	(101, 107, 18, 9, 0, 9, 924, 2, 'IVA 22%', NULL, NULL, NULL),
+	(102, 107, 18, 12, 0, 12, 3276, 3, '5 Sesiones de Puntas de Diamante, 5 Sesiones de Peelling', NULL, NULL, NULL),
+	(103, 107, 19, 1, 4200, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(104, 107, 19, 9, 0, 9, 924, 2, 'IVA 22%', NULL, NULL, NULL),
+	(105, 107, 19, 12, 0, 12, 3276, 3, '10 Sesiones de Masaje de Muzlos, 10 Sesiones de Ultrasonido, 10 Sesiones de Tens', NULL, NULL, NULL),
+	(106, 107, 20, 14, 6700, 14, 0, 1, 'ANDA', NULL, NULL, NULL),
+	(107, 107, 20, 9, 0, 9, 1474, 2, 'IVA 22%', NULL, NULL, NULL),
+	(108, 107, 20, 12, 0, 12, 5226, 3, '10 Sesiones de Ultrasonido + 10 Sesiones de Bio Magnetismo', NULL, NULL, NULL),
+	(109, 109, 21, 1, 350, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(110, 109, 21, 9, 0, 9, 77, 2, 'IVA 22%', NULL, NULL, NULL),
+	(111, 109, 21, 12, 0, 12, 273, 3, 'Peeling', NULL, NULL, NULL),
+	(112, 109, 22, 3, 7500, 3, 0, 1, 'VISA', NULL, NULL, NULL),
+	(113, 109, 22, 9, 0, 9, 1650, 2, 'IVA 22%', NULL, NULL, NULL),
+	(114, 109, 22, 12, 0, 12, 5850, 3, '5 Sesiones de Ultracavitacion, 5 sesiones de Plissage, 5 Sesiones de drenage linfatico', NULL, NULL, NULL),
+	(115, 109, 23, 6, 12500, 6, 0, 1, 'AMERICAN_EXPRESS', NULL, NULL, NULL),
+	(116, 109, 23, 9, 0, 9, 2750, 2, 'IVA 22%', NULL, NULL, NULL),
+	(117, 109, 23, 12, 0, 12, 9750, 3, '20 Sesiones de Masaje Descontracturante', NULL, NULL, NULL),
+	(118, 109, 24, 1, 4500, 1, 0, 1, 'EFECTIVO_CAJA', NULL, NULL, NULL),
+	(119, 109, 24, 9, 0, 9, 990, 2, 'IVA 22%', NULL, NULL, NULL),
+	(120, 109, 24, 12, 0, 12, 3510, 3, '8 sesiones de masaje muslos', NULL, NULL, NULL),
+	(121, 109, 25, 2, 850, 2, 0, 1, 'OCA', NULL, NULL, NULL),
+	(122, 109, 25, 9, 0, 9, 187, 2, 'IVA 22%', NULL, NULL, NULL),
+	(123, 109, 25, 12, 0, 12, 663, 3, 'Ultracavitacion', NULL, NULL, NULL),
+	(124, 109, 26, 14, 4200, 14, 0, 1, 'ANDA', NULL, NULL, NULL),
+	(125, 109, 26, 9, 0, 9, 924, 2, 'IVA 22%', NULL, NULL, NULL),
+	(126, 109, 26, 12, 0, 12, 3276, 3, '10 Sesiones de Masaje de Muzlos, 10 Sesiones de Ultrasonido, 10 Sesiones de Tens', NULL, NULL, NULL);
+/*!40000 ALTER TABLE `asiento_contable` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.authorities
+DROP TABLE IF EXISTS `authorities`;
+CREATE TABLE IF NOT EXISTS `authorities` (
+  `auth_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT NULL,
+  `authority` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`auth_id`),
+  UNIQUE KEY `username_authority` (`username`,`authority`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.authorities: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `authorities` DISABLE KEYS */;
+REPLACE INTO `authorities` (`auth_id`, `username`, `authority`) VALUES
+	(1, 'admin', 'ROLE_ADMIN'),
+	(2, 'raul', 'ROLE_USER');
+/*!40000 ALTER TABLE `authorities` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.aux_precios
+DROP TABLE IF EXISTS `aux_precios`;
+CREATE TABLE IF NOT EXISTS `aux_precios` (
+  `aux_prec_id` int(11) NOT NULL AUTO_INCREMENT,
+  `aux_prec_id_list` int(11) DEFAULT NULL,
+  `aux_prec_fech_ini` date DEFAULT NULL,
+  `aux_prec_fech_fin` date DEFAULT NULL,
+  `aux_prec_descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`aux_prec_id`),
+  UNIQUE KEY `aux_prec_fech_ini_aux_prec_fech_fin` (`aux_prec_fech_ini`,`aux_prec_fech_fin`),
+  KEY `aux_prec_id_list` (`aux_prec_id_list`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.aux_precios: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `aux_precios` DISABLE KEYS */;
+REPLACE INTO `aux_precios` (`aux_prec_id`, `aux_prec_id_list`, `aux_prec_fech_ini`, `aux_prec_fech_fin`, `aux_prec_descripcion`) VALUES
+	(57, 1, '2016-05-02', '2016-06-01', 'Mayo-Junio-2016'),
+	(58, 2, '2016-06-02', '2016-07-01', 'Junio-Julio2016'),
+	(59, 3, '2016-07-02', '2016-07-01', 'Julio-Agosto2016'),
+	(60, 4, '2016-07-02', '2016-08-02', 'Julio-Agosto2016');
+/*!40000 ALTER TABLE `aux_precios` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.caja
+DROP TABLE IF EXISTS `caja`;
+CREATE TABLE IF NOT EXISTS `caja` (
+  `caja_id` int(11) NOT NULL AUTO_INCREMENT,
+  `caja_estado` varchar(50) NOT NULL DEFAULT 'CERRADO',
+  `caja_fecha` date NOT NULL DEFAULT '2016-01-01',
+  `caja_hora` time NOT NULL DEFAULT '00:00:00',
+  `caja_usr` varchar(50) NOT NULL DEFAULT 'Inicio',
+  PRIMARY KEY (`caja_id`),
+  KEY `caja_id_caja_estado` (`caja_id`,`caja_estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.caja: ~41 rows (aproximadamente)
+/*!40000 ALTER TABLE `caja` DISABLE KEYS */;
+REPLACE INTO `caja` (`caja_id`, `caja_estado`, `caja_fecha`, `caja_hora`, `caja_usr`) VALUES
+	(68, 'CERRADO', '2016-01-01', '00:00:00', 'Inicio'),
+	(69, 'ABIERTO', '2016-05-09', '00:54:00', 'admin'),
+	(70, 'CERRADO', '2016-05-09', '00:54:01', 'admin'),
+	(71, 'ABIERTO', '2016-05-09', '00:55:00', 'admin'),
+	(72, 'CERRADO', '2016-05-09', '00:55:00', 'raul'),
+	(73, 'ABIERTO', '2016-05-10', '22:40:00', 'gaby'),
+	(74, 'CERRADO', '2016-05-10', '22:57:00', 'gaby'),
+	(75, 'ABIERTO', '2016-06-12', '00:39:01', 'admin'),
+	(77, 'ABIERTO', '2016-06-14', '20:37:00', 'admin'),
+	(78, 'CERRADO', '2016-06-14', '23:39:00', 'admin'),
+	(79, 'ABIERTO', '2016-06-14', '23:44:00', 'admin'),
+	(80, 'CERRADO', '2016-06-14', '23:44:00', 'admin'),
+	(81, 'ABIERTO', '2016-06-14', '23:51:00', 'admin'),
+	(82, 'CERRADO', '2016-06-14', '23:52:00', 'admin'),
+	(83, 'ABIERTO', '2016-06-15', '00:11:00', 'admin'),
+	(84, 'CERRADO', '2016-06-15', '00:11:00', 'admin'),
+	(85, 'ABIERTO', '2016-06-15', '00:18:01', 'admin'),
+	(86, 'CERRADO', '2016-06-15', '00:19:00', 'admin'),
+	(87, 'ABIERTO', '2016-06-15', '00:29:00', 'admin'),
+	(88, 'CERRADO', '2016-06-15', '00:29:00', 'admin'),
+	(89, 'ABIERTO', '2016-06-15', '00:29:00', 'admin'),
+	(90, 'CERRADO', '2016-06-15', '00:30:00', 'admin'),
+	(91, 'ABIERTO', '2016-06-15', '00:30:00', 'admin'),
+	(92, 'CERRADO', '2016-06-15', '00:30:00', 'admin'),
+	(93, 'ABIERTO', '2016-06-15', '00:32:00', 'admin'),
+	(94, 'CERRADO', '2016-06-15', '00:32:00', 'admin'),
+	(95, 'ABIERTO', '2016-06-15', '00:33:00', 'admin'),
+	(96, 'CERRADO', '2016-06-15', '00:38:00', 'admin'),
+	(97, 'ABIERTO', '2016-06-15', '01:39:00', 'admin'),
+	(98, 'CERRADO', '2016-06-15', '07:02:00', 'admin'),
+	(99, 'ABIERTO', '2016-06-15', '07:10:00', 'admin'),
+	(100, 'CERRADO', '2016-06-15', '19:53:00', 'admin'),
+	(101, 'ABIERTO', '2016-06-15', '20:02:00', 'admin'),
+	(102, 'CERRADO', '2016-06-15', '20:49:00', 'admin'),
+	(103, 'ABIERTO', '2016-06-16', '00:02:01', 'admin'),
+	(104, 'CERRADO', '2016-06-22', '22:40:00', 'admin'),
+	(105, 'ABIERTO', '2016-06-22', '22:40:00', 'admin'),
+	(106, 'CERRADO', '2016-06-25', '21:10:00', 'admin'),
+	(107, 'ABIERTO', '2016-06-25', '21:10:00', 'admin'),
+	(108, 'CERRADO', '2016-07-06', '00:22:00', 'admin'),
+	(109, 'ABIERTO', '2016-07-06', '00:22:00', 'admin');
+/*!40000 ALTER TABLE `caja` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.cuentas
+DROP TABLE IF EXISTS `cuentas`;
+CREATE TABLE IF NOT EXISTS `cuentas` (
+  `cuenta_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta_grupo_id` int(11) NOT NULL,
+  `cuenta_desc` varchar(50) NOT NULL,
+  `cuenta_tipo` int(11) NOT NULL,
+  `cuenta_fecha` date NOT NULL,
+  `cuenta_hora` time NOT NULL,
+  `cuenta_usuario` varchar(50) NOT NULL,
+  PRIMARY KEY (`cuenta_id`),
+  KEY `formas_de_pago` (`cuenta_desc`),
+  KEY `FK_cuentas_grupo_cuentas` (`cuenta_grupo_id`),
+  CONSTRAINT `FK_cuentas_grupo_cuentas` FOREIGN KEY (`cuenta_grupo_id`) REFERENCES `grupo_cuentas` (`grupo_cuenta_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.cuentas: ~18 rows (aproximadamente)
+/*!40000 ALTER TABLE `cuentas` DISABLE KEYS */;
+REPLACE INTO `cuentas` (`cuenta_id`, `cuenta_grupo_id`, `cuenta_desc`, `cuenta_tipo`, `cuenta_fecha`, `cuenta_hora`, `cuenta_usuario`) VALUES
+	(1, 8, 'EFECTIVO_CAJA', 1, '2016-05-16', '23:19:00', 'admin'),
+	(2, 9, 'OCA', 1, '2016-05-16', '23:19:01', 'admin'),
+	(3, 9, 'VISA', 1, '2016-05-16', '23:20:00', 'admin'),
+	(4, 9, 'MASTER', 1, '2016-05-16', '23:20:00', 'admin'),
+	(5, 9, 'DINERS', 1, '2016-05-16', '23:20:00', 'admin'),
+	(6, 9, 'AMERICAN_EXPRESS', 1, '2016-05-22', '11:59:00', 'gaby'),
+	(7, 7, 'BCP', 1, '2016-05-16', '23:20:00', 'admin'),
+	(8, 7, 'BROU', 1, '2016-05-16', '23:21:00', 'admin'),
+	(9, 11, 'IVA 22%', 2, '2016-05-16', '23:45:00', 'admin'),
+	(10, 11, 'IGV', 2, '2016-05-16', '23:46:00', 'admin'),
+	(11, 12, 'OCA 10%', 2, '2016-05-16', '23:46:00', 'admin'),
+	(12, 15, 'MASAJES', 3, '2016-05-23', '21:19:00', 'admin'),
+	(13, 15, 'LIMPIEZA', 3, '2016-05-23', '21:19:00', 'admin'),
+	(14, 9, 'ANDA', 1, '2016-05-31', '10:50:00', 'admin'),
+	(15, 11, 'IRPF', 2, '2016-06-10', '01:28:00', 'admin'),
+	(16, 11, 'FONASA', 2, '2016-06-10', '01:28:01', 'admin'),
+	(17, 11, 'BPS', 2, '2016-06-10', '01:29:00', 'admin'),
+	(18, 11, 'FON_NAC_RES', 2, '2016-06-29', '21:25:00', 'admin');
+/*!40000 ALTER TABLE `cuentas` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.direccion
+DROP TABLE IF EXISTS `direccion`;
+CREATE TABLE IF NOT EXISTS `direccion` (
+  `dir_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tpo_Vivienda` varchar(50) DEFAULT NULL,
+  `calle` varchar(50) DEFAULT NULL,
+  `nro_Puerta` int(11) DEFAULT NULL,
+  `nro_Ap` int(11) DEFAULT NULL,
+  `calle_1` varchar(50) DEFAULT NULL,
+  `calle_2` varchar(50) DEFAULT NULL,
+  `pac_cedula` int(8) DEFAULT NULL,
+  PRIMARY KEY (`dir_id`),
+  KEY `pacientes_direccion` (`pac_cedula`),
+  CONSTRAINT `pacientes_direccion` FOREIGN KEY (`pac_cedula`) REFERENCES `pacientes` (`cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.direccion: ~87 rows (aproximadamente)
+/*!40000 ALTER TABLE `direccion` DISABLE KEYS */;
+REPLACE INTO `direccion` (`dir_id`, `tpo_Vivienda`, `calle`, `nro_Puerta`, `nro_Ap`, `calle_1`, `calle_2`, `pac_cedula`) VALUES
+	(32, 'CASA', 'Cairoli', 2076, 0, 'Avenida Italia', 'Abalos', 44188684),
+	(33, 'CASA', 'Roldos y Pons', 2020, 0, 'Robinson', 'Berlin', 44247486),
+	(37, 'APARTAMENTO', '18 de Julio', 2082, 106, 'Martin C Martinez', 'Requena', 24578956),
+	(38, 'CASA', 'Gabriel Otero', 1450, 0, 'Bolonia', 'Dublin', 42542474),
+	(39, 'CASA', 'Roldos y Pons', 2522, 201, 'Robinson', 'Berlin', 14578958),
+	(40, 'CASA', 'Federico Garia Lorca', 4050, 0, '', '', 24577742),
+	(41, 'CASA', 'Av A la Palaya', 1020, 0, 'Gianatasio', '', 44588795),
+	(66, 'CASA', 'Cairoli', 2076, 0, 'Avenida Italia', 'Abalos', 19455549),
+	(67, 'APARTAMENTO', 'Palmar', 2124, 104, 'Requena', 'Paulier', 19455549),
+	(68, 'CASA', '18 de Julio', 2015, 205, 'Martin C Martinez', 'Requena', 45698741),
+	(69, 'APARTAMENTO', 'Palmar', 2180, 104, 'Requena', 'Paulier', 10042763),
+	(70, 'APARTAMENTO', 'Feliciano Rodriguez', 2010, 107, 'Ramon Anador', 'Rivera', 12456637),
+	(71, 'CASA', 'Cardal', 1046, 0, 'Francisco Simon', 'Luis Alberto de Herrera', 35465475),
+	(72, 'APARTAMENTO', 'Pirineos', 2823, 1, '8 de Octubre', 'Mateo Cortes', 42629707),
+	(73, 'CASA', 'Dublin', 2015, 0, 'Mones Roses', 'Pedro Domingo Murillo', 54145782),
+	(74, 'APARTAMENTO', 'General Paz', 1506, 1005, 'Mones Roses', 'Pedro Domingo Murillo', 54145782),
+	(144, 'CASA', 'San José', 2015, 0, 'Rio Negro', 'Paraguay', 24567896),
+	(145, 'APARTAMENTO', 'Cerro Largo', 2425, 4, 'Juan Carlos Gomez', 'Treinta y Tres', 24157481),
+	(146, 'APARTAMENTO', 'Gaboto', 2056, 105, 'Colonia', 'Mercedes', 45789653),
+	(147, 'APARTAMENTO', 'Luis Alberto de Herrera', 2015, 405, 'Montes Caseros', 'Otra', 45156898),
+	(148, 'CASA', 'Sevilla', 1478, 0, '', '', 25890747),
+	(157, 'APARTAMENTO', 'Palmar', 200, 1212, 'Requena', 'Paulier', 32145771),
+	(158, 'CASA', 'Palmar', 2020, 0, 'Requena', 'Paulier', 23364786),
+	(159, 'CASA', 'Cairoli', 3030, 0, 'Abalos', 'Massini', 32124561),
+	(160, 'CASA', 'Interbalnearea km 22', 0, 0, '', '', 41547843),
+	(161, 'APARTAMENTO', 'Francisco Simón', 2015, 105, 'Cairoli', 'Minesota', 65453215),
+	(162, 'APARTAMENTO', '18 de Julio', 1745, 5, 'Tacuarembó', 'Carlos Roxlo', 54324322),
+	(217, 'APARTAMENTO', 'Gonzalo Ramirez', 2145, 105, 'Garzon', 'Av Italia', 29584732),
+	(218, 'APARTAMENTO', '18 de Julio', 2024, 204, 'Martin C Martinez', 'Pablo de Maria', 31245675),
+	(219, 'CASA', 'Gianatassio', 6050, 0, '', '', 31245675),
+	(220, 'APARTAMENTO', '18 de Julio', 3020, 5, 'Convencion', 'Andes', 41578943),
+	(221, 'APARTAMENTO', '18 de Julio', 3010, 1020, 'Convencion', 'Andes', 62135218),
+	(222, 'CASA', 'Av Italia', 2020, 0, 'Comercio', 'Sevilla', 51234568),
+	(223, 'CASA', 'Av A la Paya', 2010, 0, '', '', 31245697),
+	(224, 'APARTAMENTO', 'Av Brasil', 4012, 2408, 'Masini', 'Chucarro', 31245697),
+	(225, 'CASA', 'Cairoli', 2484, 0, 'Masini', 'Abalos', 45213216),
+	(226, 'CASA', 'Corrales', 2845, 0, 'Galvani', 'Emilio Zola', 41214153),
+	(227, 'APARTAMENTO', 'Bartolome Mitre', 1416, 6, 'Sarandi', 'Buenos Aires', 54152636),
+	(228, 'APARTAMENTO', 'Benito Blanco', 1425, 1003, 'Av Brasil', 'Bulevar España', 29144124),
+	(229, 'APARTAMENTO', 'Rivera', 2124, 203, 'Requena', 'Paulier', 42154126),
+	(230, 'CASA', 'Rivera', 2124, 0, 'Requena', 'Paulier', 61234566),
+	(231, 'CASA', 'Rivera', 2050, 0, 'Requena', 'Paulier', 41021326),
+	(232, 'CASA', 'Massini', 2030, 0, 'Cairoli', 'Luis Alberto de Herrera', 32145618),
+	(233, 'CASA', 'Massini', 2020, 0, 'Cairoli', 'Luis Alberto de Herrera', 12034566),
+	(234, 'CASA', 'Massini', 6464, 0, 'Cairoli', 'Luis Alberto de Herrera', 12542339),
+	(235, 'CASA', 'Arocena', 2034, 0, 'Mones Roses', 'Lieja', 25413634),
+	(236, 'CASA', 'Av Gianatassio', 4050, 0, 'Calle1', 'Calle5', 32145226),
+	(237, 'CASA', 'Arocena', 1532, 0, 'Mones Roses', 'Lieja', 15478418),
+	(238, 'CASA', 'Abalos', 1020, 0, 'Cairoli', 'Luis Alberto de Herrera', 14547886),
+	(239, 'CASA', 'Arocena', 3030, 0, 'Mones Roses', 'Lieja', 31244455),
+	(240, 'CASA', 'Arocena', 1235, 0, 'Mones Roses', 'Lieja', 23413632),
+	(241, 'APARTAMENTO', 'Paulier', 2080, 205, 'Palmar', 'Rivera', 19345033),
+	(242, 'CASA', 'Arocena', 2056, 0, 'M Otero', 'Schoeder', 25457892),
+	(243, 'APARTAMENTO', 'Gabriel Pereira', 2145, 703, 'Rivera', 'Charrua', 24578912),
+	(244, 'CASA', 'Camino Carrasco', 2030, 0, '', '', 32145624),
+	(245, 'CASA', 'Calle 1', 2030, 0, 'Calle2', 'Calle3', 45632153),
+	(246, 'APARTAMENTO', 'Avenida Brasil', 2014, 104, 'Calle1', 'Calle2', 47894519),
+	(247, 'APARTAMENTO', 'Jiron Huascaran', 579, 2, 'Bolivar', '28 de Diciembre', 19347188),
+	(248, 'CASA', 'La Marina', 206, 0, 'Avenida Brasil', 'Jr Jose M Ugarteche', 34121141),
+	(249, 'APARTAMENTO', 'Avenida Bolivia', 2050, 2002, '', '', 14789454),
+	(250, 'CASA', 'Marcelino Bartelot', 2024, 0, 'Gral Flores', 'Marcelino Sosa', 54124566),
+	(251, 'CASA', 'Manuel B Otero', 2056, 0, 'Ancona', 'Bolognia', 24512465),
+	(252, 'CASA', 'Avenida Bolivia', 4010, 0, '', '', 45267483),
+	(253, 'CASA', 'Avenida Bolivia', 4040, 0, '', '', 24158792),
+	(254, 'CASA', 'Manuel B Otero', 2020, 0, '', '', 15849853),
+	(255, 'CASA', 'Ancona', 2013, 0, 'Av Italia', 'Juan Bautista Alberdi', 41254569),
+	(256, 'CASA', 'Av San Martin', 2014, 0, '', '', 21453325),
+	(257, 'CASA', 'Cavour', 2014, 0, 'Cairoli', 'Francisco Simon', 14788745),
+	(258, 'CASA', 'Avenida Bolivia', 3010, 0, '', '', 31022037),
+	(259, 'CASA', 'Cairoli', 1230, 0, 'Av Italia', 'Abalos', 31021237),
+	(260, 'CASA', 'Av Gianatasio ', 8040, 0, '', '', 54120128),
+	(261, 'CASA', 'Abalos', 2010, 0, 'Cairoli', 'Francisco Simon', 14512031),
+	(262, 'CASA', 'Manuel B Otero', 2020, 0, 'Av Italia', 'Bolognia', 35241021),
+	(263, 'CASA', 'Camino Carrasco', 2010, 0, '', '', 41023982),
+	(264, 'CASA', 'Marcelino Bartelot', 1245, 0, '', '', 14152637),
+	(265, 'CASA', 'Abalos', 3232, 0, 'Av Italia', 'Francisco Simon', 63210102),
+	(266, 'CASA', 'Abalos', 2030, 0, '', '', 25647893),
+	(267, 'CASA', 'Cavour', 1203, 2, 'Cairoli', 'Francisco Simon', 41245786),
+	(269, 'CASA', 'Abalos', 2020, 0, '', '', 35639636),
+	(270, 'APARTAMENTO', 'Av Uruguay', 1240, 102, 'Carlos Roxlo', 'Tacuarembo', 14528953),
+	(271, 'CASA', 'Abalos', 2010, 0, '', '', 41547893),
+	(272, 'CASA', 'Avenida Gianatasio', 2040, 0, '', '', 42011233),
+	(273, 'APARTAMENTO', 'Camino Carrasco', 2014, 204, '', '', 15421528),
+	(274, 'CASA', 'Arriola', 314, 5, '', '', 5412474),
+	(275, 'CASA', 'Arriola', 328, 304, '', '', 4512635),
+	(276, 'CASA', 'Abalos', 2010, 0, 'Av Italia', 'Francisco Simon', 45124108),
+	(277, 'APARTAMENTO', 'Avenida Gianatasio', 4569, 0, 'calle A', 'calle D', 47896636),
+	(278, 'CASA', 'Avenida Italia', 2056, 105, 'Calle 1', 'Calle 2', 45154787);
+/*!40000 ALTER TABLE `direccion` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.domain_user
+DROP TABLE IF EXISTS `domain_user`;
+CREATE TABLE IF NOT EXISTS `domain_user` (
+  `dom_usr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dom_usr_nom` varchar(50) NOT NULL,
+  `dom_usr_ap` varchar(50) NOT NULL,
+  `dom_usr_nic` varchar(50) NOT NULL,
+  `dom_usr_pass` varchar(50) NOT NULL,
+  `dom_usr_enabled` int(1) NOT NULL,
+  PRIMARY KEY (`dom_usr_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.domain_user: ~6 rows (aproximadamente)
+/*!40000 ALTER TABLE `domain_user` DISABLE KEYS */;
+REPLACE INTO `domain_user` (`dom_usr_id`, `dom_usr_nom`, `dom_usr_ap`, `dom_usr_nic`, `dom_usr_pass`, `dom_usr_enabled`) VALUES
+	(1, 'admin', 'admin', 'admin', 'admin', 1),
+	(2, 'German', 'Hernandez', 'hirokkanti', 'german', 1),
+	(3, 'Raul', 'Hernandez', 'raul', 'rulo', 1),
+	(4, 'Gabriela', 'Silveira', 'gaby', 'gaby20', 1),
+	(5, 'Raul', 'Hernandez', 'raul2', 'raul2', 0),
+	(6, 'Raul', 'de Pablos', 'rauldep', 'rauldep', 0);
+/*!40000 ALTER TABLE `domain_user` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.formas_de_pagos
+DROP TABLE IF EXISTS `formas_de_pagos`;
+CREATE TABLE IF NOT EXISTS `formas_de_pagos` (
+  `form_pag_id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_pag_abreviacion` varchar(20) NOT NULL,
+  `form_pag_cuenta` int(11) DEFAULT NULL,
+  `form_pag_desc` varchar(50) DEFAULT NULL,
+  `form_pag_tipo` varchar(2) NOT NULL,
+  PRIMARY KEY (`form_pag_id`),
+  KEY `form_pag_abreviacion` (`form_pag_abreviacion`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.formas_de_pagos: ~9 rows (aproximadamente)
+/*!40000 ALTER TABLE `formas_de_pagos` DISABLE KEYS */;
+REPLACE INTO `formas_de_pagos` (`form_pag_id`, `form_pag_abreviacion`, `form_pag_cuenta`, `form_pag_desc`, `form_pag_tipo`) VALUES
+	(19, 'EFECTIVO', 1, 'Efectivo', 'EF'),
+	(20, 'OCA', 2, 'Tarjeta Credito Oca', 'TC'),
+	(21, 'VISA', 3, 'Tarjeta Credito Visa', 'TC'),
+	(22, 'MASTER', 4, 'Tarjeta Credito Master', 'TC'),
+	(23, 'DINERS', 5, 'Tarjeta Credito Diners', 'TC'),
+	(24, 'AMEX', 6, 'Tarjeta Credito American Express', 'TC'),
+	(25, 'BROU', 8, 'Deposito Cuenta Brou', 'DP'),
+	(26, 'ANDA', 14, 'Tarjeta Credito Anda', 'TC'),
+	(27, 'CRED', 1, 'Credito en Efectivo', 'CE');
+/*!40000 ALTER TABLE `formas_de_pagos` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.groups
+DROP TABLE IF EXISTS `groups`;
+CREATE TABLE IF NOT EXISTS `groups` (
+  `id` int(11) DEFAULT NULL,
+  `group_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.groups: ~8 rows (aproximadamente)
+/*!40000 ALTER TABLE `groups` DISABLE KEYS */;
+REPLACE INTO `groups` (`id`, `group_name`) VALUES
+	(1, 'GROUP_MEMBERS_ADMIN'),
+	(2, 'GROUP_MEMBERS_CEO'),
+	(3, 'GROUP_MEMBERS_ENCARGADO'),
+	(4, 'GROUP_MEMBERS_MASAJISTA'),
+	(1, 'GROUP_MEMBERS_ADMIN'),
+	(2, 'GROUP_MEMBERS_CEO'),
+	(3, 'GROUP_MEMBERS_ENCARGADO'),
+	(4, 'GROUP_MEMBERS_MASAJISTA');
+/*!40000 ALTER TABLE `groups` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.groups_authorities
+DROP TABLE IF EXISTS `groups_authorities`;
+CREATE TABLE IF NOT EXISTS `groups_authorities` (
+  `group_id` int(11) DEFAULT NULL,
+  `authority` varchar(50) NOT NULL,
+  PRIMARY KEY (`authority`),
+  UNIQUE KEY `group_id_authority` (`group_id`,`authority`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.groups_authorities: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `groups_authorities` DISABLE KEYS */;
+REPLACE INTO `groups_authorities` (`group_id`, `authority`) VALUES
+	(1, 'ROLE_ADMIN'),
+	(1, 'ROLE_USER');
+/*!40000 ALTER TABLE `groups_authorities` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.groups_members
+DROP TABLE IF EXISTS `groups_members`;
+CREATE TABLE IF NOT EXISTS `groups_members` (
+  `group_id` int(11) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.groups_members: ~8 rows (aproximadamente)
+/*!40000 ALTER TABLE `groups_members` DISABLE KEYS */;
+REPLACE INTO `groups_members` (`group_id`, `username`) VALUES
+	(1, 'admin'),
+	(2, 'raul'),
+	(3, 'gaby'),
+	(4, 'test'),
+	(1, 'admin'),
+	(2, 'raul'),
+	(3, 'gaby'),
+	(4, 'test');
+/*!40000 ALTER TABLE `groups_members` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.grupo_cuentas
+DROP TABLE IF EXISTS `grupo_cuentas`;
+CREATE TABLE IF NOT EXISTS `grupo_cuentas` (
+  `grupo_cuenta_id` int(11) NOT NULL AUTO_INCREMENT,
+  `grupo_tipo_cuenta` varchar(50) DEFAULT NULL,
+  `grupo_cuenta_desc` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`grupo_cuenta_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.grupo_cuentas: ~9 rows (aproximadamente)
+/*!40000 ALTER TABLE `grupo_cuentas` DISABLE KEYS */;
+REPLACE INTO `grupo_cuentas` (`grupo_cuenta_id`, `grupo_tipo_cuenta`, `grupo_cuenta_desc`) VALUES
+	(7, 'INGRESO', 'BANCOS'),
+	(8, 'INGRESO', 'EFECTIVO'),
+	(9, 'INGRESO', 'TARJETAS'),
+	(10, 'GASTOS', 'PRODUCTOS'),
+	(11, 'GASTOS', 'IMPUESTOS'),
+	(12, 'GASTOS', 'DESCUENTOS'),
+	(13, 'PATRIMONIO', 'EQUIPOS'),
+	(14, 'DEUDAS', 'PRESTAMOS'),
+	(15, 'VENTA', 'SERVICIOS');
+/*!40000 ALTER TABLE `grupo_cuentas` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.historial_cajas
+DROP TABLE IF EXISTS `historial_cajas`;
+CREATE TABLE IF NOT EXISTS `historial_cajas` (
+  `hist_caj_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cajas_id` int(11) DEFAULT NULL,
+  `cajas_estado` varchar(50) DEFAULT NULL,
+  `cajas_fecha` date DEFAULT NULL,
+  `cajas_hora` time DEFAULT NULL,
+  `cajas_usr` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`hist_caj_id`),
+  KEY `FK_historial_cajas_cajas` (`cajas_id`),
+  CONSTRAINT `FK_historial_cajas_cajas` FOREIGN KEY (`cajas_id`) REFERENCES `caja` (`caja_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.historial_cajas: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `historial_cajas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historial_cajas` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.historial_pagos
+DROP TABLE IF EXISTS `historial_pagos`;
+CREATE TABLE IF NOT EXISTS `historial_pagos` (
+  `hist_pagos_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hist_pagos_trat_pac_id` int(11) DEFAULT NULL,
+  `hist_tipo_pago` varchar(50) DEFAULT NULL,
+  `hist_pagos_fecha_pago` date DEFAULT NULL,
+  `hist_pagos_hora_pago` time DEFAULT NULL,
+  `hist_pagos_monto` int(11) DEFAULT NULL,
+  `hist_pagos_usuario` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`hist_pagos_id`),
+  KEY `hist__pagos_trat_pac_id` (`hist_pagos_trat_pac_id`),
+  CONSTRAINT `FK_historial_pagos_tratamiento_paciente` FOREIGN KEY (`hist_pagos_trat_pac_id`) REFERENCES `tratamiento_paciente` (`trat_pac_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=717 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.historial_pagos: ~71 rows (aproximadamente)
+/*!40000 ALTER TABLE `historial_pagos` DISABLE KEYS */;
+REPLACE INTO `historial_pagos` (`hist_pagos_id`, `hist_pagos_trat_pac_id`, `hist_tipo_pago`, `hist_pagos_fecha_pago`, `hist_pagos_hora_pago`, `hist_pagos_monto`, `hist_pagos_usuario`) VALUES
+	(646, 530, 'EFECTIVO', '2016-06-03', NULL, 850, NULL),
+	(647, 531, 'EFECTIVO', '2016-06-10', NULL, 850, NULL),
+	(648, 532, 'EFECTIVO', '2016-06-13', NULL, 850, NULL),
+	(649, 533, 'EFECTIVO', '2016-06-14', NULL, 850, NULL),
+	(650, 534, 'EFECTIVO', '2016-06-14', NULL, 850, NULL),
+	(651, 535, 'EFECTIVO', '2016-06-14', NULL, 850, NULL),
+	(652, 536, 'EFECTIVO', '2016-06-15', NULL, 850, NULL),
+	(653, 537, 'EFECTIVO', '2016-06-22', NULL, 850, NULL),
+	(654, 538, 'EFECTIVO', '2016-06-22', NULL, 320, NULL),
+	(655, 539, 'EFECTIVO', '2016-06-22', NULL, 850, NULL),
+	(656, 540, 'EFECTIVO', '2016-06-22', NULL, 13500, NULL),
+	(657, 541, 'EFECTIVO', '2016-06-22', NULL, 4500, NULL),
+	(658, 542, 'EFECTIVO', '2016-06-22', NULL, 850, NULL),
+	(659, 543, 'EFECTIVO', '2016-06-22', NULL, 8250, NULL),
+	(660, 544, 'EFECTIVO', '2016-06-24', NULL, 850, NULL),
+	(661, 545, 'EFECTIVO', '2016-06-24', NULL, 8250, NULL),
+	(662, 546, 'EFECTIVO', '2016-06-24', NULL, 850, NULL),
+	(663, 547, 'EFECTIVO', '2016-06-24', NULL, 3500, NULL),
+	(664, 548, 'EFECTIVO', '2016-06-25', NULL, 850, NULL),
+	(665, 549, 'EFECTIVO', '2016-06-25', NULL, 850, NULL),
+	(666, 550, 'EFECTIVO', '2016-06-26', NULL, 850, NULL),
+	(667, 551, 'EFECTIVO', '2016-06-26', NULL, 12500, NULL),
+	(668, 552, 'EFECTIVO', '2016-06-26', NULL, 3000, NULL),
+	(669, 553, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(670, 554, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(671, 555, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(672, 556, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(673, 557, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(674, 558, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(675, 559, 'EFECTIVO', '2016-06-28', NULL, 2600, NULL),
+	(676, 560, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(677, 561, 'EFECTIVO', '2016-06-28', NULL, 4200, NULL),
+	(678, 562, 'EFECTIVO', '2016-06-28', NULL, 850, NULL),
+	(679, 563, 'EFECTIVO', '2016-06-29', NULL, 850, NULL),
+	(680, 564, 'EFECTIVO', '2016-06-30', NULL, 850, NULL),
+	(681, 565, 'EFECTIVO', '2016-07-01', NULL, 320, NULL),
+	(682, 566, 'EFECTIVO', '2016-07-01', NULL, 850, NULL),
+	(683, 567, 'EFECTIVO', '2016-07-01', NULL, 5500, NULL),
+	(684, 568, 'EFECTIVO', '2016-07-02', NULL, 12500, NULL),
+	(685, 569, 'EFECTIVO', '2016-07-02', NULL, 650, NULL),
+	(686, 570, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(687, 571, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(688, 572, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(689, 573, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(690, 574, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(691, 575, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(692, 576, 'EFECTIVO', '2016-07-02', NULL, 12500, NULL),
+	(693, 577, 'EFECTIVO', '2016-07-02', NULL, 3500, NULL),
+	(694, 578, 'EFECTIVO', '2016-07-02', NULL, 8700, NULL),
+	(695, 579, 'EFECTIVO', '2016-07-02', NULL, 2600, NULL),
+	(696, 580, 'EFECTIVO', '2016-07-02', NULL, 850, NULL),
+	(697, 581, 'EFECTIVO', '2016-07-02', NULL, 13500, NULL),
+	(698, 582, 'EFECTIVO', '2016-07-04', NULL, 850, NULL),
+	(699, 583, 'EFECTIVO', '2016-07-04', NULL, 850, NULL),
+	(700, 584, 'EFECTIVO', '2016-07-04', NULL, 850, NULL),
+	(701, 585, 'EFECTIVO', '2016-07-04', NULL, 8250, NULL),
+	(702, 586, 'OCA', '2016-07-05', NULL, 850, NULL),
+	(703, 587, 'VISA', '2016-07-05', NULL, 4000, NULL),
+	(704, 588, 'MASTER', '2016-07-05', NULL, 4500, NULL),
+	(705, 589, 'EFECTIVO', '2016-07-05', NULL, 850, NULL),
+	(706, 590, 'EFECTIVO', '2016-07-05', NULL, 4500, NULL),
+	(707, 591, 'OCA', '2016-07-05', NULL, 850, NULL),
+	(708, 592, 'DINERS', '2016-07-05', NULL, 4200, NULL),
+	(709, 593, 'EFECTIVO', '2016-07-05', NULL, 4200, NULL),
+	(710, 594, 'ANDA', '2016-07-05', NULL, 6700, NULL),
+	(711, 595, 'CRED', '2016-07-06', NULL, 300, NULL),
+	(712, 596, 'VISA', '2016-07-06', NULL, 7500, NULL),
+	(713, 597, 'AMEX', '2016-07-06', NULL, 12500, NULL),
+	(714, 598, 'EFECTIVO', '2016-07-06', NULL, 4500, NULL),
+	(715, 599, 'OCA', '2016-07-06', NULL, 850, NULL),
+	(716, 600, 'ANDA', '2016-07-06', NULL, 4200, NULL);
+/*!40000 ALTER TABLE `historial_pagos` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.historia_clinica
+DROP TABLE IF EXISTS `historia_clinica`;
+CREATE TABLE IF NOT EXISTS `historia_clinica` (
+  `hist_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pac_cedula` int(8) DEFAULT NULL,
+  `diabetes` int(11) DEFAULT NULL,
+  `epilepsia` int(11) DEFAULT NULL,
+  `marcaPaso` int(11) DEFAULT NULL,
+  `diu` int(11) DEFAULT NULL,
+  `problemas_cardiacos` varchar(50) DEFAULT NULL,
+  `medicacion` varchar(50) DEFAULT NULL,
+  `cant_hijos` int(11) DEFAULT NULL,
+  `operaciones` varchar(50) DEFAULT NULL,
+  `hipertension` int(11) DEFAULT NULL,
+  `procesos_oncologicos` int(11) DEFAULT NULL,
+  `tiroides` int(11) DEFAULT NULL,
+  `actividad_fisica` varchar(50) DEFAULT NULL,
+  `agua_diaria` varchar(50) DEFAULT NULL,
+  `alimentacion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`hist_id`),
+  KEY `pacientes_historia_clinica` (`pac_cedula`),
+  CONSTRAINT `paciente_historia` FOREIGN KEY (`pac_cedula`) REFERENCES `pacientes` (`cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.historia_clinica: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `historia_clinica` DISABLE KEYS */;
+REPLACE INTO `historia_clinica` (`hist_id`, `pac_cedula`, `diabetes`, `epilepsia`, `marcaPaso`, `diu`, `problemas_cardiacos`, `medicacion`, `cant_hijos`, `operaciones`, `hipertension`, `procesos_oncologicos`, `tiroides`, `actividad_fisica`, `agua_diaria`, `alimentacion`) VALUES
+	(1, 45154787, 1, 0, 0, 1, 'NO', 'NO', 2, 'NO', 1, 0, 0, 'Yoga', '2 Litros', 'Variada');
+/*!40000 ALTER TABLE `historia_clinica` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.impuesto
+DROP TABLE IF EXISTS `impuesto`;
+CREATE TABLE IF NOT EXISTS `impuesto` (
+  `impuesto_id` int(11) NOT NULL AUTO_INCREMENT,
+  `impuesto_desc` varchar(50) DEFAULT NULL,
+  `impuesto_desc_abrv` varchar(50) DEFAULT NULL,
+  `impuesto_valor` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `impuesto_tipo` varchar(10) NOT NULL,
+  `impuesto_cuenta` int(11) NOT NULL,
+  PRIMARY KEY (`impuesto_id`),
+  KEY `FK_impuesto_cuentas` (`impuesto_cuenta`),
+  CONSTRAINT `FK_impuesto_cuentas` FOREIGN KEY (`impuesto_cuenta`) REFERENCES `cuentas` (`cuenta_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.impuesto: ~12 rows (aproximadamente)
+/*!40000 ALTER TABLE `impuesto` DISABLE KEYS */;
+REPLACE INTO `impuesto` (`impuesto_id`, `impuesto_desc`, `impuesto_desc_abrv`, `impuesto_valor`, `impuesto_tipo`, `impuesto_cuenta`) VALUES
+	(1, 'Impuesto al Valor Agregado', 'IVA', 22.000, 'ECONOMICO', 9),
+	(2, 'Sin Impuestos', 'S_IMP', 0.000, 'ECONOMICO', 9),
+	(3, 'Impuesto Recaudacion Personas Fisicas Franja 1', 'IRPF_F1', 0.000, 'PERSONAS', 15),
+	(4, 'Impuesto Recaudacion Personas Fisicas Franja 2', 'IRPF_F2', 10.000, 'PERSONAS', 15),
+	(5, 'Impuesto Recaudacion Personas Fisicas Franja 3', 'IRPF_F3', 18.000, 'PERSONAS', 15),
+	(6, 'Impuesto Recaudacion Personas Fisicas Franja 4', 'IRPF_F4', 23.000, 'PERSONAS', 15),
+	(7, 'Impuesto Recaudacion Personas Fisicas Franja 5', 'IRPF_F5', 26.000, 'PERSONAS', 15),
+	(8, 'Impuesto Recaudacion Personas Fisicas Franja 6', 'IRPF_F6', 29.000, 'PERSONAS', 15),
+	(9, 'Impuesto Recaudacion Personas Fisicas Franja 7', 'IRPF_F7', 34.000, 'PERSONAS', 15),
+	(10, 'Fondo de Reconversión Laboral', 'FRL', 0.125, 'PERSONAS', 18),
+	(12, 'Banco de Prevision Social Aporte Jubilatorio', 'BPS_AJ', 7.500, 'PERSONAS', 17),
+	(13, 'Fondo Nacional de Salud', 'FONASA', 3.000, 'PERSONAS', 16);
+/*!40000 ALTER TABLE `impuesto` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.lista_precios
+DROP TABLE IF EXISTS `lista_precios`;
+CREATE TABLE IF NOT EXISTS `lista_precios` (
+  `list_prec_id` int(11) DEFAULT NULL,
+  `list_prec_id_trat` int(11) DEFAULT NULL,
+  `list_prec_monto` int(11) DEFAULT NULL,
+  UNIQUE KEY `list_prec_id_list_prec_id_trat` (`list_prec_id`,`list_prec_id_trat`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.lista_precios: ~212 rows (aproximadamente)
+/*!40000 ALTER TABLE `lista_precios` DISABLE KEYS */;
+REPLACE INTO `lista_precios` (`list_prec_id`, `list_prec_id_trat`, `list_prec_monto`) VALUES
+	(1, 2, 850),
+	(1, 7, 10500),
+	(1, 8, 4000),
+	(1, 9, 13500),
+	(1, 11, 5500),
+	(1, 12, 350),
+	(1, 16, 350),
+	(1, 17, 650),
+	(1, 19, 4500),
+	(1, 20, 3000),
+	(1, 21, 4200),
+	(1, 22, 12500),
+	(1, 23, 3500),
+	(1, 24, 8900),
+	(1, 25, 2600),
+	(1, 26, 8250),
+	(1, 27, 320),
+	(1, 28, 320),
+	(1, 29, 320),
+	(1, 30, 3000),
+	(1, 31, 6700),
+	(1, 32, 6500),
+	(1, 33, 320),
+	(1, 34, 650),
+	(1, 35, 320),
+	(1, 36, 8700),
+	(1, 37, 2300),
+	(1, 38, 320),
+	(1, 39, 320),
+	(1, 40, 320),
+	(1, 41, 1500),
+	(1, 42, 320),
+	(1, 43, 4200),
+	(1, 44, 320),
+	(1, 45, 7500),
+	(1, 46, 220),
+	(1, 47, 350),
+	(1, 48, 150),
+	(1, 49, 320),
+	(1, 50, 2500),
+	(1, 51, 220),
+	(1, 52, 3200),
+	(1, 53, 0),
+	(1, 54, 3500),
+	(1, 55, 550),
+	(1, 56, 5000),
+	(1, 57, 350),
+	(1, 58, 2500),
+	(1, 59, 2500),
+	(1, 60, 320),
+	(1, 61, 320),
+	(1, 62, 150),
+	(1, 63, 5400),
+	(2, 2, 850),
+	(2, 7, 10500),
+	(2, 8, 4000),
+	(2, 9, 13500),
+	(2, 11, 5500),
+	(2, 12, 350),
+	(2, 16, 350),
+	(2, 17, 650),
+	(2, 19, 4500),
+	(2, 20, 3000),
+	(2, 21, 4200),
+	(2, 22, 12500),
+	(2, 23, 3500),
+	(2, 24, 8900),
+	(2, 25, 2600),
+	(2, 26, 8250),
+	(2, 27, 320),
+	(2, 28, 320),
+	(2, 29, 320),
+	(2, 30, 3000),
+	(2, 31, 6700),
+	(2, 32, 6500),
+	(2, 33, 320),
+	(2, 34, 650),
+	(2, 35, 320),
+	(2, 36, 8700),
+	(2, 37, 2300),
+	(2, 38, 320),
+	(2, 39, 320),
+	(2, 40, 320),
+	(2, 41, 1500),
+	(2, 42, 320),
+	(2, 43, 4200),
+	(2, 44, 320),
+	(2, 45, 7500),
+	(2, 46, 220),
+	(2, 47, 350),
+	(2, 48, 150),
+	(2, 49, 320),
+	(2, 50, 2500),
+	(2, 51, 220),
+	(2, 52, 3200),
+	(2, 53, 0),
+	(2, 54, 3500),
+	(2, 55, 550),
+	(2, 56, 5000),
+	(2, 57, 350),
+	(2, 58, 2500),
+	(2, 59, 2500),
+	(2, 60, 320),
+	(2, 61, 320),
+	(2, 62, 150),
+	(2, 63, 5400),
+	(3, 2, 850),
+	(3, 7, 10500),
+	(3, 8, 4000),
+	(3, 9, 13500),
+	(3, 11, 5500),
+	(3, 12, 350),
+	(3, 16, 350),
+	(3, 17, 650),
+	(3, 19, 4500),
+	(3, 20, 3000),
+	(3, 21, 4200),
+	(3, 22, 12500),
+	(3, 23, 3500),
+	(3, 24, 8900),
+	(3, 25, 2600),
+	(3, 26, 8250),
+	(3, 27, 320),
+	(3, 28, 320),
+	(3, 29, 320),
+	(3, 30, 3000),
+	(3, 31, 6700),
+	(3, 32, 6500),
+	(3, 33, 320),
+	(3, 34, 650),
+	(3, 35, 320),
+	(3, 36, 8700),
+	(3, 37, 2300),
+	(3, 38, 320),
+	(3, 39, 320),
+	(3, 40, 320),
+	(3, 41, 1500),
+	(3, 42, 320),
+	(3, 43, 4200),
+	(3, 44, 320),
+	(3, 45, 7500),
+	(3, 46, 220),
+	(3, 47, 350),
+	(3, 48, 150),
+	(3, 49, 320),
+	(3, 50, 2500),
+	(3, 51, 220),
+	(3, 52, 3200),
+	(3, 53, 0),
+	(3, 54, 3500),
+	(3, 55, 550),
+	(3, 56, 5000),
+	(3, 57, 350),
+	(3, 58, 2500),
+	(3, 59, 2500),
+	(3, 60, 320),
+	(3, 61, 320),
+	(3, 62, 150),
+	(3, 63, 5400),
+	(4, 2, 850),
+	(4, 7, 10500),
+	(4, 8, 4000),
+	(4, 9, 13500),
+	(4, 11, 5500),
+	(4, 12, 350),
+	(4, 16, 350),
+	(4, 17, 650),
+	(4, 19, 4500),
+	(4, 20, 3000),
+	(4, 21, 4200),
+	(4, 22, 12500),
+	(4, 23, 3500),
+	(4, 24, 8900),
+	(4, 25, 2600),
+	(4, 26, 8250),
+	(4, 27, 320),
+	(4, 28, 320),
+	(4, 29, 320),
+	(4, 30, 3000),
+	(4, 31, 6700),
+	(4, 32, 6500),
+	(4, 33, 320),
+	(4, 34, 650),
+	(4, 35, 320),
+	(4, 36, 8700),
+	(4, 37, 2300),
+	(4, 38, 320),
+	(4, 39, 320),
+	(4, 40, 320),
+	(4, 41, 1500),
+	(4, 42, 320),
+	(4, 43, 4200),
+	(4, 44, 320),
+	(4, 45, 7500),
+	(4, 46, 220),
+	(4, 47, 350),
+	(4, 48, 150),
+	(4, 49, 320),
+	(4, 50, 2500),
+	(4, 51, 220),
+	(4, 52, 3200),
+	(4, 53, 0),
+	(4, 54, 3500),
+	(4, 55, 550),
+	(4, 56, 5000),
+	(4, 57, 350),
+	(4, 58, 2500),
+	(4, 59, 2500),
+	(4, 60, 320),
+	(4, 61, 320),
+	(4, 62, 150),
+	(4, 63, 5400);
+/*!40000 ALTER TABLE `lista_precios` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.nic_roles
+DROP TABLE IF EXISTS `nic_roles`;
+CREATE TABLE IF NOT EXISTS `nic_roles` (
+  `nic_rol_id` int(11) NOT NULL AUTO_INCREMENT,
+  `nic_rol_user_nic_id` int(11) NOT NULL,
+  `nic_rol_name_id` int(11) NOT NULL,
+  PRIMARY KEY (`nic_rol_id`),
+  UNIQUE KEY `nic_rol_user_nic_id_nic_rol_name_id` (`nic_rol_user_nic_id`,`nic_rol_name_id`),
+  KEY `FK_nic_roles_roles` (`nic_rol_name_id`),
+  CONSTRAINT `FK_nic_roles_domain_user` FOREIGN KEY (`nic_rol_user_nic_id`) REFERENCES `domain_user` (`dom_usr_id`),
+  CONSTRAINT `FK_nic_roles_roles` FOREIGN KEY (`nic_rol_name_id`) REFERENCES `roles` (`rol_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.nic_roles: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `nic_roles` DISABLE KEYS */;
+REPLACE INTO `nic_roles` (`nic_rol_id`, `nic_rol_user_nic_id`, `nic_rol_name_id`) VALUES
+	(1, 1, 1),
+	(2, 2, 1),
+	(3, 3, 2),
+	(4, 4, 2);
+/*!40000 ALTER TABLE `nic_roles` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.pacientes
+DROP TABLE IF EXISTS `pacientes`;
+CREATE TABLE IF NOT EXISTS `pacientes` (
+  `pac_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pac_nombre` varchar(50) DEFAULT NULL,
+  `pac_apellido` varchar(50) DEFAULT NULL,
+  `cedula` int(8) DEFAULT NULL,
+  `pac_ocupacion` varchar(50) DEFAULT NULL,
+  `pac_soc_med` varchar(50) DEFAULT NULL,
+  `pac_em_movil` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`pac_id`),
+  UNIQUE KEY `cedula` (`cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.pacientes: ~87 rows (aproximadamente)
+/*!40000 ALTER TABLE `pacientes` DISABLE KEYS */;
+REPLACE INTO `pacientes` (`pac_id`, `pac_nombre`, `pac_apellido`, `cedula`, `pac_ocupacion`, `pac_soc_med`, `pac_em_movil`) VALUES
+	(99, 'Gabriela', 'Silveira', 44188684, 'Masajista', 'CASMU', 'SUAT'),
+	(100, 'Luisa', 'Silveira', 44247486, 'Cajera', 'La Española ', 'SUAT'),
+	(106, 'Maria', 'Fernandez', 24578956, 'Arquitecto', 'La Española ', 'SMI'),
+	(107, 'Florencia', 'Gonzalez', 42542474, 'Medica', 'CASMU', 'SUAT'),
+	(110, 'Carina', 'Gomez', 14578958, 'Empleada', 'CASMU', 'SUAT'),
+	(111, 'Daniela', 'Rodriguez', 24577742, 'Empresaria', 'La Española ', 'SUAT'),
+	(112, 'Leticia', 'Firpo', 44588795, 'Escribana', 'CASMU', 'SUAT'),
+	(132, 'Raul', 'Hernandez', 19455549, 'Programador', 'CASMU', 'SUAT'),
+	(133, 'Maria', 'Gonzalez', 45698741, 'Cajera', 'La Española ', 'SMI'),
+	(134, 'Maria del Carmen', 'de Pablos', 10042763, 'Jubilada', 'ASSE', 'NO'),
+	(135, 'Marianela', 'Rodriguez', 12456637, 'Abogada', 'CASMU', 'SUAT'),
+	(136, 'Lucia', 'Bermudez', 35465475, 'Comerciante', 'CASMU', 'SEM'),
+	(137, 'Fernando', 'Quiroga', 42629707, 'Amo de Casa', 'GRENCA', 'SUAT'),
+	(138, 'Elisa', 'Introinni', 54145782, 'Secretaria', 'CASMU', 'SEM'),
+	(209, 'Natalia', 'Mederos', 24567896, 'Escribana', 'La Española ', 'SMI'),
+	(210, 'Fernanda', 'Lacco', 24157481, 'Diseñadora', 'Hospital Britanico', 'SUAT'),
+	(211, 'Mario', 'Cabrera', 45789653, 'Medico', 'La Española ', 'SEM'),
+	(212, 'Ximena', 'Rodriguez', 45156898, 'Pedicura', 'CASMU', 'SUAT'),
+	(213, 'jessi', 'Martínez ', 25890747, 'Enfermera ', 'Médica Uruguaya ', 'SEM'),
+	(223, 'Natalia', 'Gonzalez', 32145771, 'Cajera', 'CASMU', 'SUAT'),
+	(224, 'Fiorela', 'Lacco', 23364786, 'Medica', 'CASMU', 'SUAT'),
+	(225, 'Marcela', 'Perdomo', 32124561, 'Maestra', 'CASMU', 'SUAT'),
+	(226, 'Fernanda', 'Martinez', 41547843, 'Escribana', 'La Española', 'SUAT'),
+	(227, 'Marianela', 'Caputto', 65453215, 'Secretaria', 'La Española', 'SUAT'),
+	(228, 'Daniela', 'Gonzalez', 54324322, 'Empleada', 'CASMU', 'SUAT'),
+	(284, 'Alejandra', 'Gomez', 29584732, 'Empleada', 'La Española', 'SUAT'),
+	(285, 'Patricia', 'Martinez', 31245675, 'Odontologa', 'CASMU', 'SUAT'),
+	(286, 'Marianela', 'Fernandez', 41578943, 'Escribana', 'CASMU', 'SUAT'),
+	(287, 'Claudia', 'Benitez', 62135218, 'Empleada', 'CASMU', 'SUAT'),
+	(288, 'Laura', 'Paulier', 51234568, 'Escribana', 'CASMU', 'SUAT'),
+	(289, 'Analia', 'Rubio', 31245697, 'Empresaria', 'Hospital Britanico', 'SUAT'),
+	(290, 'Maria', 'Perez', 45213216, 'Administrativa', 'SMI', 'SEM'),
+	(291, 'Elida', 'Martinez', 41214153, 'Empleada', 'Hospital Militar', 'SUAT'),
+	(292, 'Lorena', 'Errico', 54152636, 'Maestra', 'CASMU', 'SUAT'),
+	(293, 'Patricia', 'Soca', 29144124, 'Docente', 'La Española', 'SEM'),
+	(294, 'Camila', 'Perez', 42154126, 'Empleada', 'CASMU', 'SUAT'),
+	(295, 'Florencia', 'Chavez', 61234566, 'Arquitecta', 'CASMU', 'SUAT'),
+	(296, 'Leticia', 'Lacorte', 41021326, 'Arquitecta', 'CASMU', 'SUAT'),
+	(297, 'Natalia', 'Rodriguez', 32145618, 'Empleada', 'CASMU', 'SUAT'),
+	(298, 'Paula', 'Fernandez', 12034566, 'Empleada', 'CASMU', 'SUAT'),
+	(299, 'Fernanda', 'Gonzalez', 12542339, 'Empleada', 'CASMU', 'SUAT'),
+	(300, 'Graciela', 'Diaz', 25413634, 'Escribana', 'CASMU', 'SUAT'),
+	(301, 'Pamela', 'Fernandez', 32145226, 'Abogada', 'La Española', 'SUAT'),
+	(302, 'Luciana', 'Cabrera', 15478418, 'Licenciada', 'La Española', 'SMI'),
+	(303, 'Carla', 'Benitez', 14547886, 'Empleada', 'CASMU', 'SUAT'),
+	(304, 'Pilar', 'Rodriguez', 31244455, 'Economista', 'La Española', 'SUAT'),
+	(305, 'Micaela', 'Blanco', 23413632, 'Psicologa', 'CASMU', 'SUAT'),
+	(306, 'Gianina', 'Perez', 19345033, 'Empleada', 'CASMU', 'SUAT'),
+	(307, 'Virginia', 'Paez', 25457892, 'Escribana', 'La Española', 'SUAT'),
+	(309, 'Ana ', 'Pereira', 24578912, 'Empleada', 'IMPASA', 'UCM'),
+	(310, 'Mauricio', 'Martinez', 32145624, 'Transportista', 'CASMU', 'SUAT'),
+	(311, 'Alexandra', 'Gomez', 45632153, 'Contadora', 'CASMU', 'SUAT'),
+	(312, 'Juana', 'Martinez', 47894519, 'Odontologa', 'CASMU', 'UCM'),
+	(313, 'German', 'Hernandez', 19347188, 'BioPsicologo', 'CASMU', 'SUAT'),
+	(314, 'Marianela', 'Chave', 34121141, 'Empleada', 'IMPASA', 'UCM'),
+	(315, 'Natalia', 'Poses', 14789454, 'Administrativa', 'CASMU', 'UCM'),
+	(316, 'Carla', 'Perez', 54124566, 'Empleada', 'La Española', 'SUAT'),
+	(317, 'Florencia', 'Hinze', 24512465, 'Medica', 'CASMU', 'SUAT'),
+	(318, 'Ana', 'Gomez', 45267483, 'Contadora', 'La Española', 'UCM'),
+	(319, 'Marianela', 'Hernandez', 24158792, 'Administrativa', 'CASMU', 'SUAT'),
+	(320, 'Claudia', 'Romero', 15849853, 'Medica', 'La Española', 'SUAT'),
+	(321, 'Valeria', 'Hinze', 41254569, 'Medica', 'IMPASA', 'UCM'),
+	(322, 'Pamela', 'Vaucher', 21453325, 'Empleada', 'CASMU', 'SUAT'),
+	(323, 'Graciela', 'Nuñez', 14788745, 'Abogada', 'Hospital Britanico', 'SUAT'),
+	(324, 'Karen', 'Rodriguez', 31022037, 'Odontologa', 'IMPASA', 'UCM'),
+	(325, 'Analia', 'Olmos', 31021237, 'Escribana', 'CASMU', 'SUAT'),
+	(326, 'Julia', 'Rios', 54120128, 'Peluquera', 'IMPASA', 'SUAT'),
+	(327, 'Julisa', 'Arias', 14512031, 'Contadora', 'CASMU', 'SUAT'),
+	(328, 'Katy', 'Pereira', 35241021, 'Empleada', 'La Española', 'UCM'),
+	(329, 'Sandra', 'Martinez', 41023982, 'Empleada', 'CASMU', 'SUAT'),
+	(330, 'Marcela', 'Perdomo', 14152637, 'Empleada', 'CASMU', 'SUAT'),
+	(331, 'Fabiana', 'Arias', 63210102, 'Abogada', 'Hospital Britanico', 'SUAT'),
+	(332, 'Beatriz', 'Firpo', 25647893, 'Peluquera', 'CASMU', 'UCM'),
+	(333, 'Andreina', 'Vaucher', 41245786, 'Psicologa', 'CASMU', 'SUAT'),
+	(335, 'Carolina', 'Salazar', 35639636, 'Medica', 'Hospital Britanico', 'SUAT'),
+	(336, 'Natalie', 'Silva', 54789544, 'Empleada', 'CASMU', 'SUAT'),
+	(338, 'Ariana', 'Diaz', 14528953, 'Abogada', 'Hospital Britanico', 'SUAT'),
+	(339, 'Sandra', 'Fernandez', 41547893, 'Administrativa', 'Hospital Britanico', 'SUAT'),
+	(340, 'Erika', 'Hubert', 42011233, 'Medica', 'Hospital Britanico', 'SUAT'),
+	(341, 'Leticia', 'Laborde', 15421528, 'Arquitecta', 'Hospital Britanico', 'SUAT'),
+	(342, 'Rafaela', 'Firpo', 5412474, '', '', ''),
+	(343, 'Pepe', 'Perez', 4512635, '', '', ''),
+	(344, 'florencia', 'Vaucher', 45124108, '', '', ''),
+	(345, 'Elizabet', 'Vaucher', 25478795, 'Enfermera', 'CASMU', 'SUAT'),
+	(346, 'Victoria', 'Cabrera', 47896636, 'Medica', 'CASMU', 'SUAT'),
+	(347, '56465', 'jjklk', 44188781, '', '', ''),
+	(348, 'Graciela', 'Silva', 67895431, '', '', ''),
+	(349, 'Marcela', 'Colombo', 45154787, 'Abogada', 'CASMU', 'SUAT');
+/*!40000 ALTER TABLE `pacientes` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.pago_bancos
+DROP TABLE IF EXISTS `pago_bancos`;
+CREATE TABLE IF NOT EXISTS `pago_bancos` (
+  `pag_banc_id` int(11) NOT NULL,
+  `pago_banc_nom` varchar(50) NOT NULL,
+  `pag_banc_cuenta` int(50) NOT NULL,
+  `pag_banc_monto` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.pago_bancos: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `pago_bancos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pago_bancos` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.pago_efectivo
+DROP TABLE IF EXISTS `pago_efectivo`;
+CREATE TABLE IF NOT EXISTS `pago_efectivo` (
+  `ef_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pago_ef_id` int(11) NOT NULL,
+  `pago_ef_cedula` int(11) NOT NULL,
+  `pago_ef_importe` int(11) NOT NULL,
+  `pago_ef_desc` varchar(50) NOT NULL,
+  `pago_ef_usuario` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ef_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.pago_efectivo: ~61 rows (aproximadamente)
+/*!40000 ALTER TABLE `pago_efectivo` DISABLE KEYS */;
+REPLACE INTO `pago_efectivo` (`ef_id`, `pago_ef_id`, `pago_ef_cedula`, `pago_ef_importe`, `pago_ef_desc`, `pago_ef_usuario`) VALUES
+	(360, 530, 44188684, 850, 'EFECTIVO', NULL),
+	(361, 531, 45154787, 850, 'EFECTIVO', NULL),
+	(362, 532, 19455549, 850, 'EFECTIVO', NULL),
+	(363, 533, 44188684, 850, 'EFECTIVO', NULL),
+	(364, 534, 44188684, 850, 'EFECTIVO', NULL),
+	(365, 535, 44188684, 850, 'EFECTIVO', NULL),
+	(366, 536, 44188684, 850, 'EFECTIVO', NULL),
+	(367, 537, 44188684, 850, 'EFECTIVO', NULL),
+	(368, 538, 45154787, 320, 'EFECTIVO', NULL),
+	(369, 539, 45156898, 850, 'EFECTIVO', NULL),
+	(370, 540, 47896636, 13500, 'EFECTIVO', NULL),
+	(371, 541, 25890747, 4500, 'EFECTIVO', NULL),
+	(372, 542, 44188684, 850, 'EFECTIVO', NULL),
+	(373, 543, 44188684, 8250, 'EFECTIVO', NULL),
+	(374, 544, 44188684, 850, 'EFECTIVO', NULL),
+	(375, 545, 45156898, 8250, 'EFECTIVO', NULL),
+	(376, 546, 24157481, 850, 'EFECTIVO', NULL),
+	(377, 547, 61234566, 3500, 'EFECTIVO', NULL),
+	(378, 548, 44247486, 850, 'EFECTIVO', NULL),
+	(379, 549, 45698741, 850, 'EFECTIVO', NULL),
+	(380, 550, 25890747, 850, 'EFECTIVO', NULL),
+	(381, 551, 54152636, 12500, 'EFECTIVO', NULL),
+	(382, 552, 32145771, 3000, 'EFECTIVO', NULL),
+	(383, 553, 42629707, 850, 'EFECTIVO', NULL),
+	(384, 554, 29584732, 850, 'EFECTIVO', NULL),
+	(385, 555, 62135218, 850, 'EFECTIVO', NULL),
+	(386, 556, 12456637, 850, 'EFECTIVO', NULL),
+	(387, 557, 54152636, 850, 'EFECTIVO', NULL),
+	(388, 558, 31245697, 850, 'EFECTIVO', NULL),
+	(389, 559, 35465475, 2600, 'EFECTIVO', NULL),
+	(390, 560, 45789653, 850, 'EFECTIVO', NULL),
+	(391, 561, 45156898, 4200, 'EFECTIVO', NULL),
+	(392, 562, 41214153, 850, 'EFECTIVO', NULL),
+	(393, 563, 44188684, 850, 'EFECTIVO', NULL),
+	(394, 564, 44588795, 850, 'EFECTIVO', NULL),
+	(395, 565, 12456637, 320, 'EFECTIVO', NULL),
+	(396, 566, 45698741, 850, 'EFECTIVO', NULL),
+	(397, 567, 45156898, 5500, 'EFECTIVO', NULL),
+	(398, 568, 41021326, 12500, 'EFECTIVO', NULL),
+	(399, 569, 25890747, 650, 'EFECTIVO', NULL),
+	(400, 570, 54124566, 850, 'EFECTIVO', NULL),
+	(401, 571, 32145771, 850, 'EFECTIVO', NULL),
+	(402, 572, 45156898, 850, 'EFECTIVO', NULL),
+	(403, 573, 44188684, 850, 'EFECTIVO', NULL),
+	(404, 574, 44188684, 850, 'EFECTIVO', NULL),
+	(405, 575, 45156898, 850, 'EFECTIVO', NULL),
+	(406, 576, 32145771, 12500, 'EFECTIVO', NULL),
+	(407, 577, 32145771, 3500, 'EFECTIVO', NULL),
+	(408, 578, 24567896, 8700, 'EFECTIVO', NULL),
+	(409, 579, 54789544, 2600, 'EFECTIVO', NULL),
+	(410, 580, 35465475, 850, 'EFECTIVO', NULL),
+	(411, 581, 14578958, 13500, 'EFECTIVO', NULL),
+	(412, 582, 41214153, 850, 'EFECTIVO', NULL),
+	(413, 583, 54152636, 0, 'EFECTIVO', NULL),
+	(414, 584, 32145771, 663, 'EFECTIVO', NULL),
+	(415, 585, 45156898, 8250, 'EFECTIVO', NULL),
+	(416, 589, 32124561, 850, 'EFECTIVO', NULL),
+	(417, 590, 23413632, 4500, 'EFECTIVO', NULL),
+	(418, 593, 45698741, 4200, 'EFECTIVO', NULL),
+	(419, 595, 41214153, 300, 'CRED', NULL),
+	(420, 598, 12456637, 4500, 'EFECTIVO', NULL);
+/*!40000 ALTER TABLE `pago_efectivo` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.pago_tarjetas
+DROP TABLE IF EXISTS `pago_tarjetas`;
+CREATE TABLE IF NOT EXISTS `pago_tarjetas` (
+  `tarj_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tarj_pac_cedula` int(11) NOT NULL,
+  `tarj_pago_id` int(11) NOT NULL,
+  `tarj_nro` bigint(20) NOT NULL,
+  `tarj_desc` varchar(50) NOT NULL,
+  `tarj_vence` date NOT NULL,
+  `tarj_importe` int(11) NOT NULL,
+  `tarj_cuotas` int(11) NOT NULL,
+  `tarj_pago_usuario` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`tarj_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.pago_tarjetas: ~10 rows (aproximadamente)
+/*!40000 ALTER TABLE `pago_tarjetas` DISABLE KEYS */;
+REPLACE INTO `pago_tarjetas` (`tarj_id`, `tarj_pac_cedula`, `tarj_pago_id`, `tarj_nro`, `tarj_desc`, `tarj_vence`, `tarj_importe`, `tarj_cuotas`, `tarj_pago_usuario`) VALUES
+	(1, 44188684, 586, 1245789856478452, 'OCA', '2016-07-31', 850, 6, NULL),
+	(2, 54145782, 587, 1458974859652310, 'VISA', '2016-07-31', 4000, 10, NULL),
+	(3, 54145782, 588, 12345748976548, 'MASTER', '2016-07-31', 4500, 10, NULL),
+	(4, 23413632, 591, 12344579852498465, 'OCA', '2016-07-21', 850, 6, NULL),
+	(5, 35465475, 592, 6541524789569854, 'DINERS', '2016-07-31', 4200, 6, NULL),
+	(6, 24567896, 594, 2521478458799632, 'ANDA', '2018-08-31', 6700, 4, NULL),
+	(7, 24577742, 596, 4152898745898569, 'VISA', '2016-07-29', 7500, 10, NULL),
+	(8, 24577742, 597, 123498756498765498, 'AMEX', '2016-07-30', 12500, 10, NULL),
+	(9, 12456637, 599, 4521458963528741, 'OCA', '2016-07-25', 850, 10, NULL),
+	(10, 32124561, 600, 5124879851564, 'ANDA', '2016-07-31', 4200, 1, NULL);
+/*!40000 ALTER TABLE `pago_tarjetas` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.roles
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `rol_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rol_name` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`rol_id`),
+  UNIQUE KEY `rol_name` (`rol_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.roles: ~5 rows (aproximadamente)
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+REPLACE INTO `roles` (`rol_id`, `rol_name`) VALUES
+	(1, 'ROLE_ADMIN'),
+	(3, 'ROLE_ANONIMOUS'),
+	(2, 'ROLE_USER'),
+	(4, 'ROLE_VARIOS'),
+	(5, 'ROLE_VARIOS2');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.seguimiento_pacientes
+DROP TABLE IF EXISTS `seguimiento_pacientes`;
+CREATE TABLE IF NOT EXISTS `seguimiento_pacientes` (
+  `seg_pac_id` int(11) NOT NULL AUTO_INCREMENT,
+  `trat_pac_id` int(11) NOT NULL,
+  `fecha_control` varchar(50) DEFAULT NULL,
+  `brazo_izquierdo` int(11) DEFAULT NULL,
+  `brazo_derecho` int(11) DEFAULT NULL,
+  `muzlo_izquierdo` int(11) DEFAULT NULL,
+  `muzlo_derecho` int(11) DEFAULT NULL,
+  `abdomen` int(11) DEFAULT NULL,
+  `cintura` int(11) DEFAULT NULL,
+  `cadera` int(11) DEFAULT NULL,
+  `peso` int(11) DEFAULT NULL,
+  `imc` double unsigned DEFAULT NULL,
+  `observaciones` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`seg_pac_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.seguimiento_pacientes: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `seguimiento_pacientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `seguimiento_pacientes` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.sesiones
+DROP TABLE IF EXISTS `sesiones`;
+CREATE TABLE IF NOT EXISTS `sesiones` (
+  `ses_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ses_trat_pac_id` int(11) NOT NULL,
+  `ses_cantidad` int(11) NOT NULL,
+  `sesiones_realizadas` int(11) NOT NULL,
+  `sesiones_pendientes` int(11) NOT NULL,
+  `ses_fecha_reserva` date DEFAULT NULL,
+  `ses_estado_realizada` varchar(50) DEFAULT NULL,
+  `ses_estado_vigencia` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ses_id`),
+  KEY `sesion_tratamiento` (`ses_trat_pac_id`),
+  CONSTRAINT `sesion_tratamiento` FOREIGN KEY (`ses_trat_pac_id`) REFERENCES `tratamiento_paciente` (`trat_pac_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.sesiones: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `sesiones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sesiones` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.ses_realizadas
+DROP TABLE IF EXISTS `ses_realizadas`;
+CREATE TABLE IF NOT EXISTS `ses_realizadas` (
+  `ses_realizada_id` int(11) NOT NULL,
+  `ses_id` int(11) NOT NULL,
+  `ses_cant` int(11) NOT NULL,
+  `ses_fecha_realizada` int(11) NOT NULL,
+  PRIMARY KEY (`ses_realizada_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.ses_realizadas: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `ses_realizadas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ses_realizadas` ENABLE KEYS */;
+
+
+-- Volcando estructura para procedimiento est_vaucher.SP_resumenPorCuentasTotal
+DROP PROCEDURE IF EXISTS `SP_resumenPorCuentasTotal`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_resumenPorCuentasTotal`(cuentaTipo INT)
+BEGIN
+ CREATE TEMPORARY TABLE tmp_haber
+	SELECT as_con_caja_id, as_cuenta_haber cuenta_haber, SUM(as_cuenta_haberMonto) haber, as_cuenta_tipo tipo
+	FROM asiento_contable
+	GROUP BY as_cuenta_haber;
+	
+ CREATE TEMPORARY TABLE tmp_debe
+		SELECT as_con_caja_id, as_cuenta_debe cuenta_debe, SUM(as_cuenta_debeMonto) debe, as_cuenta_tipo tipo
+		FROM asiento_contable
+		GROUP BY as_cuenta_debe;
+	
+	SELECT c.cuenta_desc cuenta, (d.debe - h.haber) total
+	FROM caja ca, cuentas c, tmp_debe d, tmp_haber h
+	WHERE c.cuenta_id = h.cuenta_haber 
+	AND	c.cuenta_id = d.cuenta_debe
+	AND d.as_con_caja_id = h.as_con_caja_id
+	AND h.as_con_caja_id = ca.caja_id
+	AND d.tipo = h.tipo
+	AND d.tipo = cuentaTipo 
+	GROUP BY c.cuenta_desc;
+
+	DROP TABLE tmp_haber;
+	DROP TABLE tmp_debe;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento est_vaucher.SP_resumenPorCuentasTotalPorCaja
+DROP PROCEDURE IF EXISTS `SP_resumenPorCuentasTotalPorCaja`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_resumenPorCuentasTotalPorCaja`(idCaja INT, cuentaTipo INT)
+BEGIN
+ CREATE TEMPORARY TABLE tmp_haber
+	SELECT as_con_caja_id, as_cuenta_haber cuenta_haber, SUM(as_cuenta_haberMonto) haber, as_cuenta_tipo tipo
+	FROM asiento_contable
+	GROUP BY as_cuenta_haber;
+	
+ CREATE TEMPORARY TABLE tmp_debe
+		SELECT as_con_caja_id, as_cuenta_debe cuenta_debe, SUM(as_cuenta_debeMonto) debe, as_cuenta_tipo tipo
+		FROM asiento_contable
+		GROUP BY as_cuenta_debe;
+	
+	SELECT c.cuenta_desc cuenta, (d.debe - h.haber) total
+	FROM caja ca, cuentas c, tmp_debe d, tmp_haber h
+	WHERE c.cuenta_id = h.cuenta_haber 
+	AND	c.cuenta_id = d.cuenta_debe
+	AND d.as_con_caja_id = h.as_con_caja_id
+	AND h.as_con_caja_id = ca.caja_id
+	AND ca.caja_id = idCaja
+	AND d.tipo = h.as_cuenta_tipo
+	AND d.tipo = cuentaTipo 
+	GROUP BY c.cuenta_desc;
+
+	DROP TABLE tmp_haber;
+	DROP TABLE tmp_debe;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para tabla est_vaucher.tipo_tratamiento
+DROP TABLE IF EXISTS `tipo_tratamiento`;
+CREATE TABLE IF NOT EXISTS `tipo_tratamiento` (
+  `tip_trat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tip_trat_descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`tip_trat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.tipo_tratamiento: ~6 rows (aproximadamente)
+/*!40000 ALTER TABLE `tipo_tratamiento` DISABLE KEYS */;
+REPLACE INTO `tipo_tratamiento` (`tip_trat_id`, `tip_trat_descripcion`) VALUES
+	(1, 'Relax'),
+	(2, 'Terapeutico'),
+	(3, 'Modelador'),
+	(4, 'Estetico'),
+	(9, 'Cuponera'),
+	(11, 'Promocion');
+/*!40000 ALTER TABLE `tipo_tratamiento` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.tratamiento
+DROP TABLE IF EXISTS `tratamiento`;
+CREATE TABLE IF NOT EXISTS `tratamiento` (
+  `trat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `trat_tpo_id` int(11) DEFAULT NULL,
+  `trat_descripcion` varchar(200) NOT NULL,
+  `trat_cant_sesiones` int(11) DEFAULT '1',
+  `trat_ipuesto_id` int(11) DEFAULT '1',
+  PRIMARY KEY (`trat_id`),
+  KEY `FK_tratamiento_tipo_tratamiento` (`trat_tpo_id`),
+  KEY `FK_tratamiento_impuesto` (`trat_ipuesto_id`),
+  CONSTRAINT `FK_tratamiento_impuesto` FOREIGN KEY (`trat_ipuesto_id`) REFERENCES `impuesto` (`impuesto_id`),
+  CONSTRAINT `FK_tratamiento_tipo_tratamiento` FOREIGN KEY (`trat_tpo_id`) REFERENCES `tipo_tratamiento` (`tip_trat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.tratamiento: ~55 rows (aproximadamente)
+/*!40000 ALTER TABLE `tratamiento` DISABLE KEYS */;
+REPLACE INTO `tratamiento` (`trat_id`, `trat_tpo_id`, `trat_descripcion`, `trat_cant_sesiones`, `trat_ipuesto_id`) VALUES
+	(2, 3, 'Ultracavitacion', 1, 1),
+	(7, 9, '10 Sesiones de 1/2 Hora de presoterapia, y 1/2 Hora de Ultracavitacion', 10, 1),
+	(8, 9, '15 Sesiones de 15 minutos Ultrasonido', 15, 1),
+	(9, 9, '6 Sesiones Ultracavitacion, 8 Sesiones Plissage, 2 Sesiones de Presoterapia, 4 Sesiones de Electrodos', 20, 1),
+	(11, 9, '10 Sesiones 1/2 hora de Plisagge + 10 Sesiones 1/2 hora de Electrodos.', 20, 1),
+	(12, 4, 'Peeling', 1, 1),
+	(16, 2, 'Ultrasonido', 1, 1),
+	(17, 2, 'Masaje de Espalda', 1, 1),
+	(19, 9, '8 sesiones de masaje muslos', 8, 1),
+	(20, 2, '5 Sesiones de Masaje de Espalda', 5, 1),
+	(21, 2, '10 Sesiones de Masaje de Muzlos, 10 Sesiones de Ultrasonido, 10 Sesiones de Tens', 30, 1),
+	(22, 9, '20 Sesiones de Masaje Descontracturante', 20, 1),
+	(23, 9, '5 Sesiones de Drenaje Linfatico, 5 Sesiones de Masaje de Piernas, 5 Sesiones de Ultrasonido', 15, 1),
+	(24, 9, '5 Sesiones de Masaje descontracturante, 10 Sesiones de Masaje Relax', 15, 1),
+	(25, 9, '8 Sesiones de Peeling', 8, 1),
+	(26, 9, '10 Sesiones de Ultracavitacion', 10, 1),
+	(27, 1, 'Masaje cuero cabelludo', 1, 1),
+	(28, 1, 'Masaje de pies', 1, 1),
+	(29, 3, 'Masaje de abdomen con plissage', 1, 1),
+	(30, 9, '10 masajes de cuello', 10, 1),
+	(31, 9, '10 Sesiones de Ultrasonido + 10 Sesiones de Bio Magnetismo', 20, 1),
+	(32, 9, '10 Sesiones de Radio Frecuencia y 5 Sesiones de Peeling', 15, 1),
+	(33, 2, 'Masaje de Brazos', 1, 1),
+	(34, 11, '2 por 1 5 Sesiones de Masajes de Muzlos', 5, 1),
+	(35, 2, 'Masaje de hombros', 1, 1),
+	(36, 9, '5 Sesiones de Ultracavitacion y 5 Sesiones de Presoterapia', 10, 1),
+	(37, 9, '5 Sesiones de BioMagnetismo', 5, 1),
+	(38, 3, 'Plisagge', 1, 1),
+	(39, 1, 'Aroma terapia', 1, 1),
+	(40, 2, 'Meditacion', 1, 1),
+	(41, 9, '5 Sesiones de Meditacion', 5, 1),
+	(42, 4, 'Puntas de Diamante', 1, 1),
+	(43, 9, '5 Sesiones de Puntas de Diamante, 5 Sesiones de Peelling', 10, 1),
+	(44, 1, 'Cuencos Tibetanos', 1, 1),
+	(45, 9, '5 Sesiones de Ultracavitacion, 5 sesiones de Plissage, 5 Sesiones de drenage linfatico', 15, 1),
+	(46, 2, 'Masaje de ojos', 1, 1),
+	(47, 2, 'Quiropraxia de Espalda', 1, 1),
+	(48, 1, 'Masaje de 15 minutos de Espalda', 1, 1),
+	(49, 3, 'Masaje modelador de cuello', 1, 1),
+	(50, 9, '5 sesiones de SlowDeep', 5, 1),
+	(51, 2, 'Tens', 1, 1),
+	(52, 11, '2 X 1, 5 Sesiones de SlowDeep', 5, 1),
+	(53, 4, 'Depilacion de cavado', 1, 1),
+	(54, 11, '2 X 1 En 10 Sesiones de SlowDeep', 10, 1),
+	(55, 3, 'Maderoterapia', 1, 1),
+	(56, 9, '10 Sesiones de Maderoterapia', 10, 1),
+	(57, 3, 'Radio frecuencia', 1, 1),
+	(58, 9, '5 Sesiones de Peeling', 5, 1),
+	(59, 11, '2 X1 en Tratamiento Anti Age', 5, 1),
+	(60, 2, 'Tratamiento Anti Acne', 1, 1),
+	(61, 1, 'Pedicuria', 1, 1),
+	(62, 1, 'Masaje express 15 minutos', 1, 1),
+	(63, 9, '10 Sesiones de Ozono terapia', 10, 1);
+/*!40000 ALTER TABLE `tratamiento` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.tratamiento_paciente
+DROP TABLE IF EXISTS `tratamiento_paciente`;
+CREATE TABLE IF NOT EXISTS `tratamiento_paciente` (
+  `trat_pac_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pac_cedula` int(11) DEFAULT NULL,
+  `trat_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `costo_tratamiento` int(11) DEFAULT NULL,
+  `importe_pagado` int(11) DEFAULT NULL,
+  `saldo_pendiente` int(11) DEFAULT NULL,
+  `cant_sesiones` int(11) DEFAULT NULL,
+  PRIMARY KEY (`trat_pac_id`),
+  KEY `Pacientes` (`pac_cedula`),
+  CONSTRAINT `Pacientes` FOREIGN KEY (`pac_cedula`) REFERENCES `pacientes` (`cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=601 DEFAULT CHARSET=latin1 COMMENT='private int tratPacId;\r\nprivate Date fecha;\r\nprivate Pacientes pacientes;\r\nprivate Tratamiento tratamiento;\r\nprivate int cantSesiones;\r\nprivate int sesionesRealizadas;\r\nprivate int sesionesPendientes;\r\nprivate int costoTratamiento;\r\nprivate int importePagado;\r\nprivate int saldoPendiente;';
+
+-- Volcando datos para la tabla est_vaucher.tratamiento_paciente: ~71 rows (aproximadamente)
+/*!40000 ALTER TABLE `tratamiento_paciente` DISABLE KEYS */;
+REPLACE INTO `tratamiento_paciente` (`trat_pac_id`, `pac_cedula`, `trat_id`, `fecha`, `costo_tratamiento`, `importe_pagado`, `saldo_pendiente`, `cant_sesiones`) VALUES
+	(530, 44188684, 2, '2016-06-03', 850, 850, 0, 1),
+	(531, 45154787, 2, '2016-06-10', 850, 850, 0, 1),
+	(532, 19455549, 2, '2016-06-13', 850, 850, 0, 1),
+	(533, 44188684, 2, '2016-06-14', 850, 850, 0, 1),
+	(534, 44188684, 2, '2016-06-14', 850, 850, 0, 1),
+	(535, 44188684, 2, '2016-06-14', 850, 850, 0, 1),
+	(536, 44188684, 2, '2016-06-15', 850, 850, 0, 1),
+	(537, 44188684, 2, '2016-06-22', 850, 850, 0, 1),
+	(538, 45154787, 28, '2016-06-22', 320, 320, 0, 1),
+	(539, 45156898, 2, '2016-06-22', 850, 850, 0, 1),
+	(540, 47896636, 9, '2016-06-22', 13500, 13500, 0, 20),
+	(541, 25890747, 19, '2016-06-22', 4500, 4500, 0, 8),
+	(542, 44188684, 2, '2016-06-22', 850, 850, 0, 1),
+	(543, 44188684, 26, '2016-06-22', 8250, 8250, 0, 10),
+	(544, 44188684, 2, '2016-06-24', 850, 850, 0, 1),
+	(545, 45156898, 26, '2016-06-24', 8250, 8250, 0, 10),
+	(546, 24157481, 2, '2016-06-24', 850, 850, 0, 1),
+	(547, 61234566, 23, '2016-06-24', 3500, 3500, 0, 15),
+	(548, 44247486, 2, '2016-06-25', 850, 850, 0, 1),
+	(549, 45698741, 2, '2016-06-25', 850, 850, 0, 1),
+	(550, 25890747, 2, '2016-06-26', 850, 850, 0, 1),
+	(551, 54152636, 22, '2016-06-26', 12500, 12500, 0, 20),
+	(552, 32145771, 30, '2016-06-26', 3000, 3000, 0, 10),
+	(553, 42629707, 2, '2016-06-28', 850, 850, 0, 1),
+	(554, 29584732, 2, '2016-06-28', 850, 850, 0, 1),
+	(555, 62135218, 2, '2016-06-28', 850, 850, 0, 1),
+	(556, 12456637, 2, '2016-06-28', 850, 850, 0, 1),
+	(557, 54152636, 2, '2016-06-28', 850, 850, 0, 1),
+	(558, 31245697, 2, '2016-06-28', 850, 850, 0, 1),
+	(559, 35465475, 25, '2016-06-28', 2600, 2600, 0, 8),
+	(560, 45789653, 2, '2016-06-28', 850, 850, 0, 1),
+	(561, 45156898, 43, '2016-06-28', 4200, 4200, 0, 10),
+	(562, 41214153, 2, '2016-06-28', 850, 850, 0, 1),
+	(563, 44188684, 2, '2016-06-29', 850, 850, 0, 1),
+	(564, 44588795, 2, '2016-06-30', 850, 850, 0, 1),
+	(565, 12456637, 27, '2016-07-01', 320, 320, 0, 1),
+	(566, 45698741, 2, '2016-07-01', 850, 850, 0, 1),
+	(567, 45156898, 11, '2016-07-01', 5500, 5500, 0, 20),
+	(568, 41021326, 22, '2016-07-02', 12500, 12500, 0, 20),
+	(569, 25890747, 17, '2016-07-02', 650, 650, 0, 1),
+	(570, 54124566, 2, '2016-07-02', 850, 850, 0, 1),
+	(571, 32145771, 2, '2016-07-02', 850, 850, 0, 1),
+	(572, 45156898, 2, '2016-07-02', 850, 850, 0, 1),
+	(573, 44188684, 2, '2016-07-02', 850, 850, 0, 1),
+	(574, 44188684, 2, '2016-07-02', 850, 850, 0, 1),
+	(575, 45156898, 2, '2016-07-02', 850, 850, 0, 1),
+	(576, 32145771, 22, '2016-07-02', 12500, 12500, 0, 20),
+	(577, 32145771, 23, '2016-07-02', 3500, 3500, 0, 15),
+	(578, 24567896, 36, '2016-07-02', 8700, 8700, 0, 10),
+	(579, 54789544, 25, '2016-07-02', 2600, 2600, 0, 8),
+	(580, 35465475, 2, '2016-07-02', 850, 850, 0, 1),
+	(581, 14578958, 9, '2016-07-02', 13500, 13500, 0, 20),
+	(582, 41214153, 2, '2016-07-04', 850, 850, 0, 1),
+	(583, 54152636, 2, '2016-07-04', 850, 850, 0, 1),
+	(584, 32145771, 2, '2016-07-04', 850, 850, 0, 1),
+	(585, 45156898, 26, '2016-07-04', 8250, 8250, 0, 10),
+	(586, 44188684, 2, '2016-07-05', 850, 850, 0, 1),
+	(587, 54145782, 8, '2016-07-05', 4000, 4000, 0, 15),
+	(588, 54145782, 19, '2016-07-05', 4500, 4500, 0, 8),
+	(589, 32124561, 2, '2016-07-05', 850, 850, 0, 1),
+	(590, 23413632, 19, '2016-07-05', 4500, 4500, 0, 8),
+	(591, 23413632, 2, '2016-07-05', 850, 850, 0, 1),
+	(592, 35465475, 43, '2016-07-05', 4200, 4200, 0, 10),
+	(593, 45698741, 21, '2016-07-05', 4200, 4200, 0, 30),
+	(594, 24567896, 31, '2016-07-05', 6700, 6700, 0, 20),
+	(595, 41214153, 12, '2016-07-06', 350, 300, 50, 1),
+	(596, 24577742, 45, '2016-07-06', 7500, 7500, 0, 15),
+	(597, 24577742, 22, '2016-07-06', 12500, 12500, 0, 20),
+	(598, 12456637, 19, '2016-07-06', 4500, 4500, 0, 8),
+	(599, 12456637, 2, '2016-07-06', 850, 850, 0, 1),
+	(600, 32124561, 21, '2016-07-06', 4200, 4200, 0, 30);
+/*!40000 ALTER TABLE `tratamiento_paciente` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla est_vaucher.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `enabled` int(1) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla est_vaucher.users: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+REPLACE INTO `users` (`user_id`, `username`, `password`, `enabled`) VALUES
+	(1, 'admin', 'admin', 1),
+	(2, 'gaby', 'gaby20', 1),
+	(3, 'raul', 'rulo', 1),
+	(4, 'test', 'test1', 1);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
