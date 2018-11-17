@@ -2,8 +2,8 @@ package uy.com.cvaucher.ms.pacientes.services;
 
 import java.util.List;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import uy.com.cvaucher.ms.pacientes.mybatis.mapper.PacientesMapper;
 @Service("pacienteService")
 public class PacienteServiceImpl implements PacienteService {
 
-//private Logger logger = LoggerFactory.getLogger(getClass());
+private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@Autowired
@@ -24,7 +24,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public List<Paciente> findAllPacientes()
 	{
-		//logger.debug("findAllPacientes :");
+		logger.debug("findAllPacientes :");
 		
 		List<Paciente> pacientes = pacientesMapper.findAllPacientes();
 		return pacientes;
@@ -33,7 +33,7 @@ public class PacienteServiceImpl implements PacienteService {
 	
 	@Override
 	public Paciente findPacientesById(int id){
-		//logger.debug("findPacientesById :"+id);
+		logger.debug("findPacientesById :"+id);
 		
 		return pacientesMapper.findPacientesById(id);
 	}
@@ -41,7 +41,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public Paciente findPacientesByCedula(int cedula)
 	{
-		//logger.debug("findPacientesByCedula :"+cedula);
+		logger.debug("findPacientesByCedula :"+cedula);
 		
 		Paciente pacientes = null;
 		if(cedula ==0)
@@ -59,7 +59,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public List<Paciente> findPacientesByNombre(String nombre)
 	{
-		//logger.debug("findPacientesByNombre :"+nombre);
+		logger.debug("findPacientesByNombre :"+nombre);
 		
 		List<Paciente> pacientes = pacientesMapper.findPacientesByNom(nombre);
 		return pacientes;
@@ -68,7 +68,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public List<Paciente> findPacientesByApellido(String apellido)
 	{
-		//logger.debug("findPacientesByApellido :"+apellido);
+		logger.debug("findPacientesByApellido :"+apellido);
 		
 		List<Paciente> pacientes = pacientesMapper.findPacientesByApellido(apellido);
 		return pacientes;
@@ -77,7 +77,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public void insertPacientes(Paciente pacientes)
 	{
-		//logger.debug("insertPacientes :"+pacientes);
+		logger.debug("insertPacientes :"+pacientes);
 		
 		pacientesMapper.insertPacientes(pacientes);
 	}
@@ -85,7 +85,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public void updatePacientes(Paciente pacientes)
 	{
-		//logger.debug("updatePacientes :"+pacientes);
+		logger.debug("updatePacientes :"+pacientes);
 		
 		pacientesMapper.updatePacientes(pacientes);
 	}
@@ -93,14 +93,14 @@ public class PacienteServiceImpl implements PacienteService {
 	@Override
 	public void deletePacientes(int id)
 	{
-		//logger.debug("deletePacientes :"+id);
+		logger.debug("deletePacientes :"+id);
 		
 		pacientesMapper.deletePacientes(id);
 	}
 
 	@Override
 	public List<Paciente> findPacientes(SearchPacientes searchPacientes){
-		//logger.debug("findPacientes :"+ searchPacientes);
+		logger.debug("findPacientes :"+ searchPacientes);
 		List<Paciente> pacientes = null;
 		
 		if(searchPacientes.getCedula()!=0){
